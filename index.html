@@ -1,0 +1,268 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Antoine Mroczko · Ingénieur systèmes embarqués</title>
+  <meta name="description" content="Portfolio d’Antoine Mroczko, étudiant ingénieur en systèmes embarqués à l’EFREI Paris (Robotique & Drones). FPGA, VHDL, C/C++, firmware, vision par ordinateur. Recherche un stage de 5 mois à partir de novembre 2026.">
+  <meta name="author" content="Antoine Mroczko">
+  <meta name="theme-color" content="#06090f">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Antoine Mroczko · Ingénieur systèmes embarqués">
+  <meta property="og:description" content="FPGA, firmware, robotique et vision par ordinateur. Du silicium au logiciel.">
+  <meta property="og:image" content="assets/profile.jpg">
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+
+  <script type="importmap">
+  {
+    "imports": {
+      "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js",
+      "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"
+    }
+  }
+  </script>
+</head>
+<body>
+  <div class="scroll-progress" aria-hidden="true"><span></span></div>
+
+  <!-- ───────── NAV ───────── -->
+  <header class="nav" id="nav">
+    <div class="container nav-inner">
+      <a href="#top" class="logo" aria-label="Antoine Mroczko">
+        <span class="logo-chip">AM</span>
+        <span class="logo-text">antoine<span class="muted">.mroczko</span></span>
+      </a>
+      <nav class="nav-links" id="nav-links">
+        <a href="#about" data-i18n="nav.about">À propos</a>
+        <a href="#skills" data-i18n="nav.skills">Compétences</a>
+        <a href="#projects" data-i18n="nav.projects">Projets</a>
+        <a href="#timeline" data-i18n="nav.journey">Parcours</a>
+        <a href="#contact" class="nav-cta" data-i18n="nav.contact">Contact</a>
+      </nav>
+      <div class="nav-right">
+        <button class="lang-toggle mono" id="lang-toggle" type="button" data-i18n-title="lang.switch" title="View in English">
+          <span data-l="fr">FR</span><span data-l="en">EN</span>
+        </button>
+        <button class="nav-toggle" id="nav-toggle" data-i18n-aria="nav.menu" aria-label="Ouvrir le menu" aria-expanded="false" aria-controls="nav-links">
+          <span></span><span></span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main id="top">
+    <!-- ───────── HERO ───────── -->
+    <section class="hero" id="hero">
+      <canvas class="hero-canvas" id="hero-canvas" aria-hidden="true"></canvas>
+      <div class="hero-fade" aria-hidden="true"></div>
+      <div class="container hero-content">
+        <a href="#contact" class="status-pill">
+          <span class="pulse-dot"></span>
+          <span data-i18n="hero.pill">Recherche un stage embarqué de 5 mois · nov. 2026 → avr. 2027</span>
+        </a>
+        <p class="mono hero-hello"><span class="c-cyan">$</span> ./hello --name</p>
+        <h1 class="hero-title">Antoine<br><span class="grad-text">Mroczko</span></h1>
+        <p class="hero-role"><span data-i18n="hero.role">Étudiant ingénieur en systèmes embarqués, passionné par</span> <span class="typed" id="typed"></span><span class="caret" aria-hidden="true"></span></p>
+        <p class="hero-lede" data-i18n-html="hero.lede"></p>
+        <div class="hero-cta">
+          <a class="btn btn-primary" href="#projects"><span data-i18n="hero.cta">Voir mes projets</span> <span aria-hidden="true">→</span></a>
+          <a class="btn btn-ghost" href="assets/CV_Antoine_Mroczko.pdf" target="_blank" rel="noopener" data-i18n="hero.cv">Télécharger mon CV</a>
+          <div class="hero-socials">
+            <a href="https://github.com/ant-one-dev" target="_blank" rel="noopener" aria-label="GitHub" class="icon-btn" data-icon="github"></a>
+            <a href="https://www.linkedin.com/in/antoine-mroczko/" target="_blank" rel="noopener" aria-label="LinkedIn" class="icon-btn" data-icon="linkedin"></a>
+            <a href="mailto:antoinemroczko@gmail.com" aria-label="Email" class="icon-btn" data-icon="mail"></a>
+          </div>
+        </div>
+      </div>
+      <a href="#about" class="scroll-hint" aria-hidden="true" tabindex="-1">
+        <span class="mono" data-i18n="hero.scroll">défiler</span>
+        <span class="scroll-line"></span>
+      </a>
+      <div class="hero-readout mono" aria-hidden="true">
+        <span>CLK <b id="clk">100.00</b> MHz</span>
+        <span>VCC 3.3V</span>
+        <span>STATUS <b class="c-green">OK</b></span>
+      </div>
+    </section>
+
+    <!-- ───────── ABOUT ───────── -->
+    <section class="section" id="about">
+      <div class="container">
+        <header class="section-head reveal">
+          <p class="section-tag mono"><span>0x01</span> <i data-i18n="about.tag">à propos</i></p>
+          <h2 data-i18n-html="about.title"></h2>
+        </header>
+
+        <div class="about-grid">
+          <div class="about-photo reveal">
+            <div class="photo-frame">
+              <img src="assets/profile.jpg" data-i18n-alt="about.alt" alt="Portrait d’Antoine Mroczko" width="600" height="800" loading="lazy">
+              <span class="corner tl"></span><span class="corner tr"></span><span class="corner bl"></span><span class="corner br"></span>
+              <div class="photo-tag mono">ID: AM-2026 · PARIS, FR</div>
+            </div>
+          </div>
+
+          <div class="about-text reveal">
+            <p class="lead" data-i18n-html="about.lead"></p>
+            <p data-i18n-html="about.p2"></p>
+            <p data-i18n-html="about.p3"></p>
+
+            <div class="stats">
+              <div class="stat"><b data-count="1" data-prefix="#">#1</b><span data-i18n="about.s1"></span></div>
+              <div class="stat"><b>C1</b><span data-i18n="about.s2"></span></div>
+              <div class="stat"><b data-count="3">3</b><span data-i18n="about.s3"></span></div>
+              <div class="stat"><b data-count="15">15</b><span data-i18n="about.s4"></span></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="interests reveal">
+          <div class="interest"><span class="i-ico" data-icon="music"></span><div><b data-i18n="about.i1t"></b><p data-i18n="about.i1d"></p></div></div>
+          <div class="interest"><span class="i-ico" data-icon="run"></span><div><b data-i18n="about.i2t"></b><p data-i18n="about.i2d"></p></div></div>
+          <div class="interest"><span class="i-ico" data-icon="cube"></span><div><b data-i18n="about.i3t"></b><p data-i18n="about.i3d"></p></div></div>
+          <div class="interest"><span class="i-ico" data-icon="plane"></span><div><b data-i18n="about.i4t"></b><p data-i18n="about.i4d"></p></div></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ───────── SKILLS ───────── -->
+    <section class="section" id="skills">
+      <div class="container">
+        <header class="section-head reveal">
+          <p class="section-tag mono"><span>0x02</span> <i data-i18n="skills.tag">compétences</i></p>
+          <h2 data-i18n-html="skills.title"></h2>
+          <p class="section-sub" data-i18n="skills.sub"></p>
+        </header>
+
+        <div class="skills-grid">
+          <div class="stack-3d reveal" id="stack-3d" aria-hidden="true"></div>
+          <ol class="stack-list reveal" id="stack-list"></ol>
+        </div>
+
+        <div class="lang-row reveal">
+          <div class="lang"><span class="flag">FR</span><div><b data-i18n="lang.fr"></b><span data-i18n="lang.frl"></span></div><i style="--w:100%"></i></div>
+          <div class="lang"><span class="flag">EN</span><div><b data-i18n="lang.en"></b><span data-i18n="lang.enl"></span></div><i style="--w:88%"></i></div>
+          <div class="lang"><span class="flag">DE</span><div><b data-i18n="lang.de"></b><span data-i18n="lang.del"></span></div><i style="--w:55%"></i></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ───────── PROJECTS ───────── -->
+    <section class="section" id="projects">
+      <div class="container">
+        <header class="section-head reveal">
+          <p class="section-tag mono"><span>0x03</span> <i data-i18n="projects.tag">projets</i></p>
+          <h2 data-i18n-html="projects.title"></h2>
+          <p class="section-sub" data-i18n="projects.sub"></p>
+        </header>
+
+        <div class="featured" id="featured"></div>
+
+        <div class="more-head reveal" id="more-head">
+          <h3 data-i18n="projects.more">Autres projets</h3>
+          <div class="filters" id="project-filters">
+            <button class="active" data-filter="all" data-i18n="filter.all">Tout</button>
+            <button data-filter="embedded" data-i18n="filter.embedded">Embarqué &amp; signal</button>
+            <button data-filter="ai" data-i18n="filter.ai">IA &amp; vision</button>
+            <button data-filter="software" data-i18n="filter.software">Logiciel</button>
+            <button data-filter="audio" data-i18n="filter.audio">Audio</button>
+          </div>
+        </div>
+        <div class="card-grid" id="project-grid"></div>
+        <p class="filter-empty" id="filter-empty" hidden data-i18n="projects.empty"></p>
+      </div>
+    </section>
+
+    <!-- ───────── TIMELINE ───────── -->
+    <section class="section" id="timeline">
+      <div class="container">
+        <header class="section-head reveal">
+          <p class="section-tag mono"><span>0x04</span> <i data-i18n="journey.tag">parcours</i></p>
+          <h2 data-i18n-html="journey.title"></h2>
+        </header>
+
+        <div class="logo-band reveal">
+          <p class="logo-band-title mono" data-i18n="journey.logos"></p>
+          <div class="logo-marquee" id="logo-marquee"></div>
+        </div>
+
+        <div class="filters center reveal" id="timeline-filters">
+          <button class="active" data-filter="all" data-i18n="filter.all">Tout</button>
+          <button data-filter="edu" data-i18n="tlf.edu">Formation</button>
+          <button data-filter="work" data-i18n="tlf.work">Expériences</button>
+          <button data-filter="asso" data-i18n="tlf.asso">Associations</button>
+          <button data-filter="award" data-i18n="tlf.award">Distinctions</button>
+        </div>
+
+        <div class="timeline" id="timeline-list">
+          <div class="tl-line"><span class="tl-signal" id="tl-signal"></span></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ───────── CONTACT ───────── -->
+    <section class="section contact" id="contact">
+      <div class="container">
+        <div class="contact-card reveal">
+          <div class="contact-glow" aria-hidden="true"></div>
+          <p class="section-tag mono"><span>0x05</span> <i data-i18n="contact.tag">contact</i></p>
+          <h2 data-i18n-html="contact.title"></h2>
+          <p class="section-sub" data-i18n-html="contact.sub"></p>
+          <div class="contact-actions">
+            <button class="btn btn-primary copy-email" id="copy-email" data-email="antoinemroczko@gmail.com">
+              <span class="copy-label">antoinemroczko@gmail.com</span>
+              <span class="copy-hint mono" data-i18n="contact.copy">copier</span>
+            </button>
+            <a class="btn btn-ghost" href="https://www.linkedin.com/in/antoine-mroczko/" target="_blank" rel="noopener">LinkedIn</a>
+            <a class="btn btn-ghost" href="https://github.com/ant-one-dev" target="_blank" rel="noopener">GitHub</a>
+            <a class="btn btn-ghost" href="assets/CV_Antoine_Mroczko.pdf" target="_blank" rel="noopener" data-i18n="contact.cv">CV (PDF)</a>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <svg class="footer-trace" viewBox="0 0 1200 60" preserveAspectRatio="none" aria-hidden="true">
+      <path class="ft-base" d="M0 30 H340 L370 10 H560 L590 30 H830 L860 50 H1200"/>
+      <path class="ft-pulse" d="M0 30 H340 L370 10 H560 L590 30 H830 L860 50 H1200"/>
+      <circle cx="370" cy="10" r="4"/><circle cx="590" cy="30" r="4"/><circle cx="860" cy="50" r="4"/>
+    </svg>
+    <div class="container footer-grid">
+      <div class="footer-brand">
+        <a href="#top" class="logo" aria-label="Antoine Mroczko">
+          <span class="logo-chip">AM</span>
+          <span class="logo-text">antoine<span class="muted">.mroczko</span></span>
+        </a>
+        <p class="footer-tagline" data-i18n="footer.tagline"></p>
+        <p class="footer-status mono"><span class="pulse-dot"></span><span data-i18n="footer.status"></span></p>
+        <p class="footer-copy mono">© <span id="year">2026</span> Antoine Mroczko · Paris</p>
+      </div>
+      <nav class="footer-col" aria-labelledby="ft-nav">
+        <h4 class="mono" id="ft-nav" data-i18n="footer.nav"></h4>
+        <a href="#about" data-i18n="nav.about"></a>
+        <a href="#skills" data-i18n="nav.skills"></a>
+        <a href="#projects" data-i18n="nav.projects"></a>
+        <a href="#timeline" data-i18n="nav.journey"></a>
+      </nav>
+      <div class="footer-col">
+        <h4 class="mono" data-i18n="footer.contact"></h4>
+        <a href="mailto:antoinemroczko@gmail.com">antoinemroczko@gmail.com</a>
+        <a href="https://www.linkedin.com/in/antoine-mroczko/" target="_blank" rel="noopener">LinkedIn <span data-icon="ext"></span></a>
+        <a href="https://github.com/ant-one-dev" target="_blank" rel="noopener">GitHub <span data-icon="ext"></span></a>
+        <a href="assets/CV_Antoine_Mroczko.pdf" target="_blank" rel="noopener" data-i18n="contact.cv"></a>
+      </div>
+      <a href="#top" class="footer-top" data-i18n-title="footer.top" title="Haut de page">
+        <span aria-hidden="true">↑</span>
+      </a>
+    </div>
+  </footer>
+
+  <script type="module" src="js/main.js"></script>
+</body>
+</html>

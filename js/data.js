@@ -1,0 +1,356 @@
+// ─────────────────────────────────────────────────────────────
+//  All portfolio content lives here, in French and English.
+//  L(fr, en) holds both versions of a text. Edit freely —
+//  no build step needed.
+// ─────────────────────────────────────────────────────────────
+const L = (fr, en) => ({ fr, en });
+
+export const profile = {
+  name: 'Antoine Mroczko',
+  email: 'antoinemroczko@gmail.com',
+  github: 'https://github.com/ant-one-dev',
+  linkedin: 'https://www.linkedin.com/in/antoine-mroczko/',
+  cv: 'assets/CV_Antoine_Mroczko.pdf',
+  roles: L(
+    ['la conception FPGA & VHDL', 'le firmware en C/C++', 'la robotique & les drones', 'la vision embarquée', 'les systèmes temps réel'],
+    ['FPGA & VHDL design', 'firmware in C/C++', 'robotics & drones', 'computer vision on the edge', 'real-time embedded systems'],
+  ),
+};
+
+// Featured projects get a large interactive visual.
+// visual: 'robot' | 'fpga' | 'automata' | 'nn'
+// cats: categories used by the project filters.
+export const featured = [
+  {
+    id: 'vigibot',
+    title: 'Vigibot',
+    subtitle: L('Robot autonome d’inspection industrielle', 'Autonomous industrial inspection robot'),
+    year: '2026',
+    visual: 'robot',
+    cats: ['embedded', 'ai'],
+    summary: L(
+      'Robot sur Raspberry Pi 4 (kit Adeept PiCar-B2) conçu pour inspecter des sites industriels. Il traverse seul quatre zones : ligne infrarouge, obstacles, ligne rouge suivie à la caméra et labyrinthe guidé par des flèches. Nous avons forké le code du kit et l’avons largement réécrit en comportements modulaires et multithreadés.',
+      'A Raspberry Pi 4 robot (Adeept PiCar-B2 kit) built to inspect industrial sites. It crosses four zones on its own: infrared line, obstacles, camera-tracked red line and an arrow-guided labyrinth. We forked the kit’s code and largely rewrote it around modular, multithreaded behaviours.',
+    ),
+    bullets: L([
+      ['Suivi de ligne infrarouge', 'Réflectométrie IR sur une ligne noire, boucle de contrôle multithreadée et signalisation sonore au buzzer.'],
+      ['Évitement d’obstacles', 'Mesure de distance continue aux ultrasons et manœuvres de contournement, en version multithreadée pour plus de réactivité.'],
+      ['Suivi de ligne caméra', 'Segmentation HSV d’une ligne rouge dans deux régions d’intérêt. Le braquage combine position latérale et direction (65/35), avec lissage exponentiel, zone morte, anticipation des virages serrés et vitesse adaptative.'],
+      ['Labyrinthe & vision', 'Reconnaissance de flèches à la caméra pour choisir la direction à chaque intersection, et détection d’objets en temps réel avec YOLO dans la dernière version.'],
+      ['Machine à états & interface web', 'Transitions entre zones avec séquences de calibration matérielle, et serveur Flask embarqué (hotspot Wi-Fi) : flux vidéo en direct, démarrage/arrêt, choix de la zone et télémétrie.'],
+    ], [
+      ['Infrared line-following', 'IR reflectance sensing on a black line, a multithreaded control loop and buzzer signalling.'],
+      ['Obstacle avoidance', 'Continuous ultrasonic ranging and avoidance manoeuvres, with a multithreaded version for faster reactions.'],
+      ['Camera line-following', 'HSV segmentation of a red line in two regions of interest. The steering mixes lateral position and line direction (65/35), with exponential smoothing, a dead zone, early detection of sharp turns and adaptive speed.'],
+      ['Labyrinth & vision', 'Camera recognition of arrows to pick a direction at each intersection, plus real-time object detection with YOLO in the latest version.'],
+      ['State machine & web interface', 'Zone transitions with hardware calibration sequences, and an on-board Flask server (Wi-Fi hotspot): live video feed, start/stop, zone selection and telemetry.'],
+    ]),
+    tags: ['Python', 'OpenCV', 'YOLO', 'Flask', 'Raspberry Pi 4', 'Picamera2', 'Multithreading', 'I²C (PCA9685)', 'IR & ultrasonic'],
+    repo: 'https://github.com/Sowker/Vigibot',
+  },
+  {
+    id: 'fpga-reflex',
+    title: L('Jeu de réflexes sur FPGA', 'Reflex Game on FPGA'),
+    subtitle: L('Architecture matérielle synchrone sur Digilent Arty A7', 'Synchronous hardware design on a Digilent Arty A7'),
+    year: '2026',
+    visual: 'fpga',
+    cats: ['embedded'],
+    summary: L(
+      'Un jeu de temps de réaction entièrement codé en VHDL : une LED s’allume au hasard et le joueur doit appuyer sur le bouton correspondant avant la fin de la fenêtre de temps.',
+      'A reaction-time game written entirely in VHDL: a random LED lights up, and the player must hit the matching button before the time window closes.',
+    ),
+    bullets: L([
+      ['Machine d’états finis', 'Séquence la logique du jeu, mesure le temps de réaction et gère les erreurs et les fenêtres de temps.'],
+      ['Unité de calcul', 'Une ALU dédiée sert de générateur pseudo-aléatoire (PRNG) pour choisir la LED à allumer.'],
+      ['Périphériques & audio', 'Animations lumineuses sur les LED et synthèse sonore : la sortie PMOD JC commande un transistor qui laisse passer le 5 V vers le buzzer à la fréquence voulue, la masse du buzzer étant reliée à la carte.'],
+    ], [
+      ['Finite state machine', 'Sequences the game logic, measures reaction time, and handles errors and time windows.'],
+      ['Arithmetic unit', 'A dedicated ALU acts as a pseudo-random number generator (PRNG) to choose which LED lights up.'],
+      ['Peripherals & audio', 'LED animations and sound synthesis: the PMOD JC output drives a transistor that switches 5 V to the buzzer at the chosen frequency, with the buzzer’s ground tied to the board.'],
+    ]),
+    tags: ['VHDL', 'FPGA', 'Arty A7 (Artix-7)', 'Vivado', 'FSM', 'ALU', 'PMOD', 'Transistor driver'],
+    repo: null, // TODO: push the VHDL sources to VHDL2_project and link it here
+  },
+  {
+    id: 'plant-disease',
+    title: L('Détection de maladies des plantes', 'Plant Disease Detector'),
+    subtitle: L('Diagnostic de feuilles par deep learning, servi en application web', 'Deep-learning leaf diagnosis, served as a web app'),
+    year: '2025',
+    visual: 'nn',
+    cats: ['ai', 'software'],
+    summary: L(
+      'Un classifieur qui reconnaît les maladies des plantes à partir d’une photo de feuille, entraîné sur le jeu de données PlantVillage, avec des outils d’explicabilité et une application web conteneurisée.',
+      'A classifier that recognises plant diseases from a photo of a leaf, trained on the PlantVillage dataset, with explainability tools and a containerised web app.',
+    ),
+    bullets: L([
+      ['Modèle', 'Réseau convolutif sur mesure (TensorFlow/Keras, entrée 256×256, augmentation et pondération des classes) atteignant environ 98 % de précision sur le jeu de test. Des modèles de référence random forest et KNN tournent sur des features MobileNetV2.'],
+      ['Explicabilité', 'Des cartes Grad-CAM, LIME et SHAP montrent quelles zones de la feuille influencent chaque prédiction.'],
+      ['Déploiement', 'Service FastAPI (/predict, /models) où l’on choisit un modèle et envoie une photo, avec un front web. Toute la stack tourne avec Docker Compose.'],
+    ], [
+      ['Model', 'Custom convolutional network (TensorFlow/Keras, 256×256 input, augmentation and class weighting) reaching about 98% accuracy on the held-out split. Random-forest and KNN baselines run on MobileNetV2 features.'],
+      ['Explainability', 'Grad-CAM, LIME and SHAP overlays show which parts of the leaf drive each prediction.'],
+      ['Deployment', 'FastAPI service (/predict, /models) where users pick a model and upload a photo, with a web front end. The whole stack runs with Docker Compose.'],
+    ]),
+    tags: ['Python', 'TensorFlow / Keras', 'scikit-learn', 'FastAPI', 'Docker', 'Grad-CAM · LIME · SHAP'],
+    repo: 'https://github.com/Vectra777/ML-Project',
+  },
+  {
+    id: 'automata',
+    title: 'AutomateDFA Manager',
+    subtitle: L('Application pour créer, analyser et transformer des automates finis', 'Desktop app to build, analyse and transform finite automata'),
+    year: '2025',
+    visual: 'automata',
+    cats: ['software'],
+    summary: L(
+      'Une application Java Swing pour le cours de langages formels : on édite plusieurs automates en parallèle, on les voit dessinés en direct et on applique chaque transformation classique en un clic.',
+      'A Java Swing application for the formal-languages course: edit several automata side by side, see them drawn live, and apply every classic transformation in one click.',
+    ),
+    bullets: L([
+      ['Interface en trois panneaux', 'Table de transitions à gauche, graphe rendu en direct avec Graphviz au centre, historique des actions et points de cours associés à droite.'],
+      ['Analyse & transformations', 'Vérifie si un automate est déterministe, complet ou standard, et peut le déterminiser, le compléter, le standardiser, le complémenter ou le minimiser.'],
+      ['Fichiers & tests', 'Format de fichier .atx maison, export des graphes en PNG, export de l’historique en PDF et tests de reconnaissance de mots.'],
+    ], [
+      ['Three-panel interface', 'Transition table on the left, a live graph rendered with Graphviz in the centre, and an action history with related course notes on the right.'],
+      ['Analysis & transformations', 'Checks whether an automaton is deterministic, complete or standard, and can determinise, complete, standardise, complement or minimise it.'],
+      ['Files & testing', 'Custom .atx file format, PNG export of graphs, PDF export of the history, and word recognition tests.'],
+    ]),
+    tags: ['Java 17', 'Swing', 'Graphviz', 'Maven', 'Automata theory'],
+    repo: null, // private repo: ant-one-dev/Automate2.0
+  },
+];
+
+// Project cards. cats are used by the filter buttons.
+// art: generated illustration ('marauder' is an animated map).
+// status: 'wip' for projects not published yet.
+export const projects = [
+  {
+    title: L('Processeur audio Bluetooth sur ESP32', 'ESP32 Bluetooth Audio DSP'),
+    year: '2026',
+    cats: ['embedded', 'audio'],
+    art: 'spectrum',
+    status: 'wip',
+    desc: L(
+      'L’ESP32 reçoit de la musique en Bluetooth, applique en temps réel des effets choisis depuis un menu (réverbération, filtres passe-bas et passe-haut, délai…), affiche le spectre sur un écran TFT ST7735 et ressort l’audio traité par un DAC.',
+      'The ESP32 receives music over Bluetooth, applies effects picked from a menu in real time (reverb, low-pass and high-pass filters, delay…), shows the spectrum on an ST7735 TFT screen and outputs the processed audio through a DAC.',
+    ),
+    tags: ['C++', 'ESP32', 'Bluetooth', 'DSP', 'TFT ST7735', 'DAC'],
+    repo: null,
+  },
+  {
+    title: L('Traducteur Morse sur ESP32', 'ESP32 Morse Code Translator'),
+    year: '2026',
+    cats: ['embedded'],
+    art: 'morse',
+    desc: L(
+      'Saisie Morse par bouton-poussoir décodée en texte en temps réel sur un ESP32, avec retour sonore au buzzer, affichage sur écran TFT SPI (ST7735), anti-rebond logiciel et seuils de temps configurables.',
+      'Push-button Morse input decoded to text in real time on an ESP32, with buzzer feedback, an SPI TFT display (ST7735), software debouncing and configurable timing thresholds.',
+    ),
+    tags: ['C++', 'ESP32', 'PlatformIO', 'SPI', 'TFT ST7735'],
+    repo: 'https://github.com/ant-one-dev/ESP32-Morse-Code-Translator',
+  },
+  {
+    title: 'Image → Oscilloscope',
+    year: '2026',
+    cats: ['embedded', 'audio'],
+    art: 'scope',
+    desc: L(
+      'Convertit images, GIF et vidéos en un signal WAV stéréo qui les dessine sur un oscilloscope en mode XY (canal gauche = X, droit = Y). Extraction de contours, sortie jusqu’à 192 kHz, modes d’animation et interface PyQt avec aperçu en direct.',
+      'Turns images, GIFs and videos into a stereo WAV signal that draws them on an oscilloscope in XY mode (left channel = X, right = Y). Contour extraction, up to 192 kHz output, animation modes, and a PyQt GUI with a live preview.',
+    ),
+    tags: ['Python', 'OpenCV', 'NumPy', 'Signal processing', 'PyQt6'],
+    repo: null,
+  },
+  {
+    title: 'Eye-Touch',
+    year: '2026',
+    cats: ['ai'],
+    art: 'eye',
+    desc: L(
+      'Interface pilotée au regard. MediaPipe Face Mesh suit les yeux, une calibration en 5 points projette le regard sur l’écran par homographie, et une moyenne glissante combinée à un lissage exponentiel stabilise le curseur. Les objets sélectionnés contournent les obstacles grâce à A*.',
+      'Hands-free interface controlled by gaze. MediaPipe Face Mesh tracks the eyes, a 5-point calibration maps gaze to the screen with a homography, and a moving average plus EMA steadies the cursor. Selected objects find their way around obstacles with A*.',
+    ),
+    tags: ['Python', 'MediaPipe', 'OpenCV', 'Pygame', 'A*'],
+    repo: null,
+  },
+  {
+    title: 'Metallizer',
+    year: '2025',
+    cats: ['audio'],
+    art: 'wave',
+    desc: L(
+      'Plugin audio en C++ avec JUCE : une distorsion par repliement d’onde (wavefolding) autour d’un seuil réglable, avec compensation automatique du niveau et mélange dry/wet.',
+      'Audio plugin written in C++ with JUCE: a wavefolding distortion that mirrors the signal around an adjustable threshold, with automatic level compensation and a dry/wet mix.',
+    ),
+    tags: ['C++', 'JUCE', 'DSP', 'Audio plugin'],
+    repo: null,
+  },
+  {
+    title: 'Marauder Map',
+    year: '2025',
+    cats: ['software'],
+    art: 'marauder',
+    desc: L(
+      'Application Android pour aider les associations à coordonner leurs maraudes auprès des personnes sans abri. Les bénévoles se connectent, voient les zones d’intervention sur une carte, rejoignent ou créent des maraudes depuis un calendrier et saisissent bénévoles, durée et dons pour chacune.',
+      'Android app that helps charities coordinate their street outreach rounds for people experiencing homelessness. Volunteers sign in, see the outreach zones on a map, join or create rounds from a calendar, and log volunteers, duration and donations for each one.',
+    ),
+    tags: ['Kotlin', 'Jetpack Compose', 'MVVM', 'Firebase', 'Google Maps SDK'],
+    repo: null,
+  },
+  {
+    title: 'TODO · Competence Tracker',
+    year: '2025',
+    cats: ['software'],
+    art: 'kanban',
+    desc: L(
+      'Application web full-stack de suivi des compétences en entreprise : équipes, employés et compétences avec fichiers joints et descriptions en Markdown, vues Kanban, liste et calendrier, authentification par cookies et notifications par e-mail. J’ai travaillé côté serveur (modèles Sequelize, contrôleurs, routes, gestion multi-entreprises) et côté front (formulaire de tâche, glisser-déposer synchronisé avec la base, pages d’accueil et de connexion).',
+      'Full-stack web app for tracking skills within a company, with teams, employees and competencies with attached files and Markdown descriptions, Kanban, list and calendar views, cookie-based authentication and e-mail notifications. I worked on the server (Sequelize models, controllers, routes, multi-company support) and the front end (task form, drag and drop synced with the database, home and login pages).',
+    ),
+    tags: ['Vue.js 3', 'Pinia', 'Node.js', 'Express', 'Sequelize', 'MySQL', 'Docker'],
+    repo: 'https://github.com/Vectra777/todoSystem',
+  },
+  {
+    title: 'ArtConnect Pro',
+    year: '2026',
+    cats: ['software'],
+    art: 'erd',
+    desc: L(
+      'Application JavaFX de gestion d’une communauté artistique locale (artistes, œuvres, expositions, galeries, ateliers), en architecture en couches. J’ai conçu une grande partie de la base MySQL : schéma, procédures stockées et fonctions, rôles et privilèges par type d’utilisateur, puis les DAO JDBC, la connexion/inscription et les vues mises à jour en temps réel.',
+      'JavaFX app for managing a local art community (artists, artworks, exhibitions, galleries, workshops), with a layered architecture. I designed much of the MySQL side: schema, stored procedures and functions, roles and privileges per user type, then the JDBC DAOs, login/register and views that update in real time.',
+    ),
+    tags: ['Java 17', 'JavaFX', 'JDBC', 'MySQL', 'SQL procedures', 'DAO'],
+    repo: null,
+  },
+  {
+    title: L('Pathfinding du rover MARC', 'MARC Rover Pathfinding'),
+    year: '2024',
+    cats: ['software'],
+    art: 'rover',
+    desc: L(
+      'En C : un rover martien trouve le chemin le moins coûteux pour rejoindre sa base sur une carte de coûts, en construisant et en explorant un arbre de déplacements possibles, avec un travail sur la complexité en temps et en mémoire.',
+      'Written in C: a Mars rover finds the cheapest route back to its base on a cost map by building and exploring a tree of possible moves, with work on time and memory complexity.',
+    ),
+    tags: ['C', 'Trees', 'Pathfinding', 'Complexity'],
+    repo: null,
+  },
+  {
+    title: 'Graph Theory Studio',
+    year: '2026',
+    cats: ['software'],
+    art: 'hanoi',
+    desc: L(
+      'Application de bureau pour modéliser des graphes orientés pondérés à partir d’une syntaxe texte, avec rendu en direct, Floyd-Warshall (matrices pas à pas, détection de circuits absorbants) et Dijkstra. Exemple d’application : une migration de serveurs entre baies modélisée comme les tours de Hanoï. Chaque état est un sommet, chaque déplacement valide un arc, et l’algorithme trouve le nombre minimal de déplacements.',
+      'Desktop app for modelling directed weighted graphs from a text syntax, with live rendering, Floyd-Warshall (step-by-step matrices, absorbing-cycle detection) and Dijkstra. Application example: a server migration between racks modelled as the Towers of Hanoi. Each state is a vertex, each valid move an edge, and the algorithm finds the minimum number of moves.',
+    ),
+    tags: ['Python', 'PyQt5', 'PyVis', 'Floyd-Warshall', 'Dijkstra', 'Towers of Hanoi'],
+    repo: 'https://github.com/ant-one-dev/Graph-Theory',
+  },
+  {
+    title: 'CDataframe',
+    year: '2024',
+    cats: ['software'],
+    art: 'table',
+    desc: L(
+      'Une bibliothèque de dataframes façon pandas écrite en C : colonnes typées, insertion, tri et recherche, import/export CSV.',
+      'A pandas-style dataframe library written in C: typed columns, insertion, sorting and search, and CSV import/export.',
+    ),
+    tags: ['C', 'Data structures', 'Memory management'],
+    repo: null,
+  },
+  {
+    title: L('Éditeur d’images en Rust', 'Rust Image Editor'),
+    year: '2025',
+    cats: ['software'],
+    art: 'image',
+    desc: L(
+      'Éditeur d’images écrit en Rust avec eframe/egui, qui transforme les images à l’aide d’une série de filtres.',
+      'Image editor written in Rust with eframe/egui that transforms images through a set of filters.',
+    ),
+    tags: ['Rust', 'eframe', 'egui', 'Image processing'],
+    repo: 'https://github.com/ant-one-dev/image-editor',
+  },
+];
+
+// Skill stack, top (software) → bottom (silicon).
+export const stack = [
+  { layer: L('Logiciel & applications', 'Software & Apps'), code: 'L6', color: '#8b7bff',
+    items: ['Python', 'Java', 'Rust', 'Kotlin', 'SQL', 'FastAPI', 'Flask', 'Firebase', 'Docker'] },
+  { layer: L('Vision & IA embarquée', 'Vision & Edge AI'), code: 'L5', color: '#ff5c8a',
+    items: ['OpenCV', 'YOLO', 'TensorFlow / Keras', 'MediaPipe', 'scikit-learn', 'Matlab / Simulink'] },
+  { layer: L('Linux embarqué & robotique', 'Embedded Linux & Robotics'), code: 'L4', color: '#4ade80',
+    items: ['Raspberry Pi', 'Linux', 'Picamera2', L('Capteurs & actionneurs', 'Sensors & actuators'), 'Git'] },
+  { layer: L('Bus & protocoles', 'Buses & Protocols'), code: 'L3', color: '#ffd166',
+    items: ['UART', 'I²C', 'SPI', 'CAN', 'MQTT', 'Bluetooth'] },
+  { layer: L('Firmware & microcontrôleurs', 'Firmware & MCUs'), code: 'L2', color: '#3ee6ff',
+    items: ['C', 'C++', 'ESP32', 'ARM', 'RTOS', 'Arduino', 'PlatformIO'] },
+  { layer: L('Matériel & signal', 'Hardware & Signal'), code: 'L1', color: '#e2a052',
+    items: ['VHDL', 'FPGA', 'Vivado', L('Machines à états', 'FSM design'), L('Électronique', 'Electronics'), 'DSP / audio (JUCE)'] },
+];
+
+// Logos of the schools and companies (files in assets/logos, © their owners).
+// logoStrip: order of the scrolling band in the Journey section.
+export const logos = {
+  efrei: { src: 'assets/logos/efrei.svg', name: 'EFREI Paris' },
+  concordia: { src: 'assets/logos/concordia.svg', name: 'Concordia University' },
+  darty: { src: 'assets/logos/darty.svg', name: 'Darty' },
+  carrefour: { src: 'assets/logos/carrefour-city.svg', name: 'Carrefour City', light: true }, // pale logo: darker in grayscale
+  saintdo: { src: 'assets/logos/saint-dominique.png', name: 'Institution Saint-Dominique' },
+  academica: { src: 'assets/logos/academica.png', name: 'Academica Dual Diploma' },
+  ambassadair: { src: 'assets/logos/ambassadair.png', name: 'Ambassadair Academy' },
+  sfe: { src: 'assets/logos/sfe.jpg', name: 'Solidarity For Earth (SFE)' },
+  ice: { src: 'assets/logos/ice-efrei.png', name: 'ICE EFREI' },
+};
+export const logoStrip = ['efrei', 'ice', 'concordia', 'sfe', 'darty', 'carrefour', 'saintdo', 'academica', 'ambassadair'];
+
+// type: 'edu' | 'work' | 'asso' | 'award' | 'next'
+// logo: key of `logos`, or icon: 'next' | 'chip' | 'trophy' when there is no official logo
+export const timeline = [
+  { date: L('nov. 2026 → avr. 2027', 'Nov 2026 → Apr 2027'), type: 'next', icon: 'next',
+    title: L('Stage ingénieur embarqué', 'Embedded engineering internship'), org: L('Votre entreprise ?', 'Your company?'),
+    desc: L('Stage de M1 de 5 mois, du 2 novembre 2026 au 2 avril 2027. Logiciel embarqué, FPGA, robotique ou drones.',
+      '5-month M1 internship from 2 November 2026 to 2 April 2027. Embedded software, FPGA, robotics or drones.') },
+  { date: '2026 – 2027', type: 'asso', logo: 'ice',
+    title: L('Vice-président', 'Vice-President'), org: L('ICE EFREI (association technologique) · Paris', 'ICE EFREI (tech association) · Paris'),
+    desc: L('Animation d’ateliers techniques (impression 3D, Arduino, Raspberry Pi) et accompagnement des étudiants dans leurs projets électroniques.',
+      'Run hands-on workshops (3D printing, Arduino, Raspberry Pi) and mentor students on their electronics projects.') },
+  { date: L('en cours', 'ongoing'), type: 'asso', logo: 'sfe', // TODO: add the start date
+    title: L('Responsable technique', 'Technical lead'), org: 'Solidarity For Earth (SFE)',
+    desc: L('Responsable technique de l’association SFE (Solidarity For Earth), fondée par Céleste Mazure.',
+      'Technical lead of the SFE association (Solidarity For Earth), founded by Céleste Mazure.') },
+  { date: '2025 – 2026', type: 'award', logo: 'efrei',
+    title: L('Major de promotion', 'Top of class'), org: 'EFREI Paris',
+    desc: L('Classé premier de ma promotion pour l’année 2025–2026.', 'Ranked first in my class for the 2025–2026 academic year.') },
+  { date: L('août – déc. 2025', 'Aug – Dec 2025'), type: 'edu', logo: 'concordia',
+    title: L('Semestre d’échange', 'Academic exchange semester'), org: L('Concordia University · Montréal, Canada', 'Concordia University · Montréal, Canada'),
+    desc: L('Semestre d’échange universitaire au Canada.', 'International exchange semester in Canada.') },
+  { date: '2025', type: 'award', icon: 'trophy',
+    title: 'Masterdev France', org: L('Épreuve nationale de programmation', 'National programming competition'),
+    desc: L('Participation au concours national de programmation.', 'Took part in the French national programming contest.') },
+  { date: '2024 – 2025', type: 'award', logo: 'efrei',
+    title: L('Deuxième de promotion', 'Ranked 2nd in class'), org: 'EFREI Paris',
+    desc: L('Classé deuxième de ma promotion pour l’année 2024–2025.', 'Ranked second in my class for the 2024–2025 academic year.') },
+  { date: L('janv. 2025', 'Jan 2025'), type: 'work', logo: 'darty',
+    title: L('Vendeur conseil en produits techniques', 'Technical sales advisor'), org: 'Darty des Ternes · Paris',
+    desc: L('Vente et explication technique d’équipements électroniques grand public, réapprovisionnement du rayon et mise à jour des prix.',
+      'Advised customers on consumer electronics and explained them technically; restocked the department and updated prices.') },
+  { date: L('juin 2024', 'Jun 2024'), type: 'work', logo: 'carrefour',
+    title: L('Stage de manutention & logistique', 'Logistics internship'), org: 'Carrefour City · Neuilly-sur-Seine',
+    desc: L('Réception des livraisons, mise en rayon et gestion des stocks en réserve.', 'Received deliveries, stocked shelves and managed back-room inventory.') },
+  { date: '2023 – 2024', type: 'award', logo: 'efrei',
+    title: L('Major de promotion', 'Top of class'), org: 'EFREI Paris',
+    desc: L('Classé premier de ma promotion dès ma première année, en 2023–2024.', 'Ranked first in my class in my first year, 2023–2024.') },
+  { date: '2023 – 2028', type: 'edu', logo: 'efrei',
+    title: L('Diplôme d’ingénieur du numérique', 'Master of Engineering (Diplôme d’Ingénieur)'), org: L('EFREI Paris – Université Panthéon-Assas', 'EFREI Paris – Panthéon-Assas University'),
+    desc: L('Parcours Systèmes Embarqués, majeure Robotique & Drones. Section internationale, 100 % des cours en anglais.',
+      'Embedded Systems track, majoring in Robotics & Drones. International section, 100% of courses taught in English.') },
+  { date: '2023', type: 'edu', logo: 'saintdo',
+    title: L('Baccalauréat général, mention Très Bien', 'French Baccalauréat, highest honours'), org: 'Lycée Saint-Dominique',
+    desc: L('Mathématiques et Physique-Chimie. Mention Très Bien avec félicitations du jury.',
+      'Mathematics and Physics-Chemistry. Mention Très Bien with the jury’s congratulations.') },
+  { date: '2020 – 2021', type: 'edu', logo: 'ambassadair',
+    title: L('Brevet d’Initiation à l’Aéronautique (BIA)', 'Aeronautics Initiation Certificate (BIA)'), org: 'Ambassadair',
+    desc: L('Aérodynamique, connaissance des aéronefs, météorologie et navigation aérienne.',
+      'French certificate covering aerodynamics, aircraft systems, meteorology and air navigation.') },
+  { date: '2019 – 2023', type: 'edu', logo: 'academica',
+    title: L('High School Diploma américain', 'American High School Diploma'), org: 'Academica Dual Diploma',
+    desc: L('Double diplôme obtenu en parallèle du baccalauréat.', 'US diploma earned alongside the French baccalauréat.') },
+];
