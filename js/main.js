@@ -280,15 +280,6 @@ const ART = {
       <path d="M16 0 L60 -22 L60 22Z" fill="#3ee6ff" opacity=".12"/></g>
     <rect x="282" y="112" width="62" height="40" rx="3" fill="none" stroke="#ff5c8a"/><text x="282" y="107" fill="#ff5c8a" font-family="JetBrains Mono" font-size="10">yolo 0.93</text>
     <text x="30" y="24" fill="#8d9aae" font-family="JetBrains Mono" font-size="11">4 zones · state machine</text>`),
-  audio: SVG(`<rect width="400" height="170" fill="#0b0d16"/>
-    <defs><linearGradient id="aug" x1="0" y1="1" x2="0" y2="0"><stop offset="0" stop-color="#3ee6ff"/><stop offset=".6" stop-color="#8b7bff"/><stop offset="1" stop-color="#ff5c8a"/></linearGradient></defs>
-    ${Array.from({ length: 28 }, (_, i) => {
-      const x = 22 + i * 13, base = 18 + 80 / Math.sqrt(1 + Math.pow(i / 14, 8)) * (1 + 0.5 * Math.exp(-Math.pow((i - 14) / 2, 2)));
-      const vals = [0, 1, 2, 3].map((k) => Math.max(6, base * (0.55 + 0.45 * Math.abs(Math.sin(i * 1.3 + k * 1.7))))).map((h) => (150 - h).toFixed(0));
-      return `<rect x="${x}" width="9" rx="2" fill="url(#aug)" y="${vals[0]}" height="${150 - vals[0]}"><animate attributeName="y" values="${vals.join(';')};${vals[0]}" dur="${(1.1 + (i % 4) * 0.15).toFixed(2)}s" repeatCount="indefinite"/><animate attributeName="height" values="${vals.map((v) => 150 - v).join(';')};${150 - vals[0]}" dur="${(1.1 + (i % 4) * 0.15).toFixed(2)}s" repeatCount="indefinite"/></rect>`;
-    }).join('')}
-    <path d="M18 150 H382" stroke="#2a3443"/>
-    <text x="30" y="24" fill="#8d9aae" font-family="JetBrains Mono" font-size="11">A2DP · 15 FX · FFT 1024</text>`),
   fpga: SVG(`<rect width="400" height="170" fill="#08130f"/>
     <rect x="60" y="30" width="280" height="120" rx="8" fill="#0c2f2c" stroke="#1d4b45"/>
     <rect x="90" y="55" width="60" height="60" rx="4" fill="#16191f"/><text x="120" y="90" text-anchor="middle" fill="#8d9aae" font-family="JetBrains Mono" font-size="9">ARTIX-7</text>
@@ -318,7 +309,7 @@ const artLabel = (k) => (ART_LABEL[k] ? `<span class="card-art-label mono">${ART
 const grid = $('#project-grid');
 grid.innerHTML = featured.map((p) => `
   <article class="card feat-card reveal" data-cats="${p.cats.join(' ')}" data-feat="${p.id}">
-    <div class="card-art">${ART[p.visual] || ''}${artLabel(p.visual)}<span class="card-badge featured"></span></div>
+    <div class="card-art">${p.gif ? `<img class="card-gif" src="${p.gif}" alt="" loading="lazy">` : ART[p.visual] || ''}${artLabel(p.visual)}<span class="card-badge featured"></span></div>
     <div class="card-body"></div>
   </article>`).join('') + projects.map((p, i) => `
   <article class="card reveal" data-cats="${p.cats.join(' ')}" data-i="${i}">
