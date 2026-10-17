@@ -430,3 +430,101 @@ export function initMarauder(canvas) {
     }
   });
 }
+
+/* ═════════════════════════ ESP32 Audio FX ═════════════════════════ */
+// Bluetooth → effect chain → DAC, with a 40-band spectrum shaped by the active effect.
+const FX = [
+  { name: 'Low Pass', color: '#3ee6ff', param: 'cutoff', fmt: (v) => `${Math.round(400 + v * 3600)} Hz`,
+    shape: (f, v) => 1 / Math.sqrt(1 + Math.pow(f / (0.12 + v * 0.35), 8)) * (1 + 0.6 * Math.exp(-Math.pow((f - (0.12 + v * 0.35)) / 0.04, 2))) },
+  { name: 'High Pass', color: '#8b7bff', param: 'cutoff', fmt: (v) => `${Math.round(200 + v * 1800)} Hz`,
+    shape: (f, v) => 1 / Math.sqrt(1 + Math.pow((0.15 + v * 0.3) / Math.max(f, 0.01), 8)) },
+  { name: 'Band Pass', color: '#4ade80', param: 'center', fmt: (v) => `${Math.round(300 + v * 2700)} Hz`,
+    shape: (f, v) => 0.15 + 1.1 * Math.exp(-Math.pow((f - (0.25 + v * 0.45)) / 0.09, 2)) },
+  { name: 'Distortion', color: '#ff5c8a', param: 'drive', fmt: (v) => `${Math.round(10 + v * 30)} dB`,
+    shape: (f, v) => 0.7 + 0.35 * v + 0.25 * Math.abs(Math.sin(f * 38)) * v },
+  { name: 'Reverb', color: '#ffd166', param: 'size', fmt: (v) => `${Math.round(40 + v * 60)} %`,
+    shape: (f) => 0.9 * (1 - 0.35 * f) },
+  { name: 'Phaser', color: '#e2a052', param: 'rate', fmt: (v) => `${(0.2 + v * 2).toFixed(1)} Hz`,
+    shape: (f, v, t) => 0.55 + 0.45 * Math.cos(f * 26 - t * (1 + v * 3)) },
+];
+
+export function initAudio(canvas, onState) {
+  const BANDS = 40, PERIOD = 4;
+  let W = 0, H = 0, narrow = false;
+  const ctx = fitCanvas(canvas, (w, h) => { W = w; H = h; narrow = w < 460; });
+  const level = new Array(BANDS).fill(0), peak = new Array(BANDS).fill(0);
+  let lastFx = -1;
+
+  animateWhenVisible(canvas, (dt, t) => {
+    if (!W) return;
+    // rAF can stamp a frame slightly before the visibility start, so t may dip below 0
+    const idx = ((Math.floor(t / PERIOD) % FX.length) + FX.length) % FX.length;
+    const fx = FX[idx];
+    const v = 0.5 + 0.45 * Math.sin(t * 0.9); // pot being turned
+    if (idx !== lastFx || Math.floor(t * 4) !== Math.floor((t - dt) * 4)) {
+      lastFx = idx;
+      onState({ fx: fx.name, param: fx.param, value: fx.fmt(v), cpu: `${(8.5 + Math.sin(t * 1.3) * 0.8).toFixed(1)} %` });
+    }
+    ctx.clearRect(0, 0, W, H);
+
+    // signal chain
+    const nodes = ['BT A2DP', fx.name, 'MASTER', 'DAC'];
+    const cy = Math.max(70, H * 0.2), pad = narrow ? 14 : 26;
+    const bw = (W - pad * 2 - (nodes.length - 1) * (narrow ? 12 : 22)) / nodes.length, bh = narrow ? 26 : 30;
+    ctx.font = `600 ${narrow ? 9 : 11}px "JetBrains Mono", monospace`;
+    ctx.textAlign = 'center';
+    const gap = (W - pad * 2 - bw * nodes.length) / (nodes.length - 1);
+    nodes.forEach((n, i) => {
+      const x = pad + i * (bw + gap);
+      const active = i === 1;
+      if (i < nodes.length - 1) {
+        ctx.strokeStyle = '#2a3443'; ctx.lineWidth = 1.5;
+        ctx.beginPath(); ctx.moveTo(x + bw, cy); ctx.lineTo(x + bw + gap, cy); ctx.stroke();
+        const k = (t * 1.6 + i * 0.33) % 1;
+        ctx.fillStyle = fx.color; ctx.globalAlpha = Math.sin(k * Math.PI);
+        ctx.beginPath(); ctx.arc(x + bw + gap * k, cy, 2.5, 0, 7); ctx.fill();
+        ctx.globalAlpha = 1;
+      }
+      ctx.fillStyle = active ? 'rgba(13,19,29,.95)' : '#0d131d';
+      ctx.strokeStyle = active ? fx.color : '#3a4657';
+      ctx.lineWidth = active ? 1.8 : 1.2;
+      if (active) { ctx.shadowColor = fx.color; ctx.shadowBlur = 14; }
+      ctx.beginPath(); ctx.roundRect(x, cy - bh / 2, bw, bh, 6); ctx.fill(); ctx.stroke();
+      ctx.shadowBlur = 0;
+      ctx.fillStyle = active ? '#e6edf6' : '#8692a6';
+      ctx.fillText(n, x + bw / 2, cy + 4, bw - 8);
+    });
+    ctx.textAlign = 'start';
+
+    // spectrum
+    const top = cy + bh / 2 + (narrow ? 26 : 34);
+    const bottom = H - (narrow ? 104 : 112);
+    const left = narrow ? 14 : 26, right = W - (narrow ? 14 : 26);
+    const sw = (right - left) / BANDS;
+    const grad = ctx.createLinearGradient(0, bottom, 0, top);
+    grad.addColorStop(0, '#3ee6ff'); grad.addColorStop(0.6, '#8b7bff'); grad.addColorStop(1, '#ff5c8a');
+    for (let i = 0; i < BANDS; i++) {
+      const f = i / (BANDS - 1);
+      const music = 0.35 + 0.5 * Math.exp(-Math.pow((f - 0.15) / 0.18, 2)) + 0.2 * Math.exp(-Math.pow((f - 0.55) / 0.12, 2));
+      const beat = 0.75 + 0.25 * Math.abs(Math.sin(t * 2.2 + i * 0.6)) * (0.6 + 0.4 * Math.sin(t * 7.3 + i * 1.9));
+      const target = Math.min(1, music * beat * fx.shape(f, v, t) * (1 - 0.25 * f));
+      level[i] += (target - level[i]) * Math.min(1, dt * 12 || 1);
+      peak[i] = Math.max(level[i], peak[i] - dt * 0.35);
+      const h = level[i] * (bottom - top);
+      ctx.fillStyle = grad;
+      ctx.fillRect(left + i * sw + 1, bottom - h, sw - 2, h);
+      ctx.fillStyle = '#e6edf6';
+      ctx.fillRect(left + i * sw + 1, bottom - peak[i] * (bottom - top) - 2, sw - 2, 2);
+    }
+    ctx.strokeStyle = '#2a3443'; ctx.lineWidth = 1;
+    ctx.beginPath(); ctx.moveTo(left, bottom + 0.5); ctx.lineTo(right, bottom + 0.5); ctx.stroke();
+    ctx.font = `500 ${narrow ? 8.5 : 10}px "JetBrains Mono", monospace`;
+    ctx.fillStyle = '#5b6779';
+    ['20 Hz', '1 kHz', '20 kHz'].forEach((s, i) => {
+      ctx.textAlign = ['left', 'center', 'right'][i];
+      ctx.fillText(s, [left, (left + right) / 2, right][i], bottom + 15);
+    });
+    ctx.textAlign = 'start';
+    ctx.fillText(isFr() ? 'FFT 1024 pts · sortie' : 'FFT 1024 pts · output', left, top - 10);
+  });
+}
