@@ -313,7 +313,9 @@ grid.innerHTML = featured.map((p) => `
     <div class="card-body"></div>
   </article>`).join('') + projects.map((p, i) => `
   <article class="card reveal" data-cats="${p.cats.join(' ')}" data-i="${i}">
-    <div class="card-art">${ART[p.art] || ''}${artLabel(p.art)}<span class="card-badge" hidden></span></div>
+    <div class="card-art"${p.imgBg ? ` style="background:${p.imgBg}"` : ''}>${p.img
+      ? `<img class="card-img" src="${p.img}" alt="" loading="lazy">`
+      : ART[p.art] || ''}${artLabel(p.art)}<span class="card-badge" hidden></span></div>
     <div class="card-body"></div>
   </article>`).join('') + `
   <article class="card more reveal" data-cats="all">

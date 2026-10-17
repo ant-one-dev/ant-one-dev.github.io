@@ -141,6 +141,20 @@ export const projects = [
     repo: null, // private repo: ant-one-dev/Automate2.0
   },
   {
+    title: 'ICE-Box 2000',
+    year: '2026',
+    cats: ['embedded', 'audio'],
+    img: 'assets/projects/icebox-2000.webp?v=20261017',
+    imgBg: 'linear-gradient(180deg, #323d49 0%, #323e49 62%, #343f4e 64%, #3e4756 67%, #434e5f 69%, #4a5566 73%, #4b5667 85%, #444f60 100%)', // fond du rendu 3D
+    imgBg: 'linear-gradient(180deg, #323d49 0%, #323e49 62%, #343f4e 64%, #3e4756 67%, #434e5f 69%, #4a5566 73%, #4b5667 85%, #444f60 100%)', // fond du rendu 3D
+    desc: L(
+      'Juke-box conçu pour l’association ICE EFREI : on pose sur le lecteur RFID une carte imprimée avec une pochette d’album, et le Raspberry Pi lance la musique correspondante sur le système audio. J’ai dessiné tout le boîtier dans Fusion 360, au millimètre près, pour y faire rentrer le Raspberry Pi, le lecteur RFID et l’électronique audio.',
+      'A jukebox designed for the ICE EFREI association: place a printed card showing an album cover on the RFID reader and the Raspberry Pi plays the matching music through the audio system. I designed the whole enclosure in Fusion 360, down to the millimetre, so that the Raspberry Pi, the RFID reader and the audio electronics fit inside.',
+    ),
+    tags: ['Python', 'Raspberry Pi', 'RFID', 'Audio', 'Fusion 360'],
+    repo: null,
+  },
+  {
     title: L('Traducteur Morse sur ESP32', 'ESP32 Morse Code Translator'),
     year: '2026',
     cats: ['embedded'],
