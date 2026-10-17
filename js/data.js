@@ -100,7 +100,7 @@ export const featured = [
     subtitle: L('Processeur d’effets audio Bluetooth temps réel sur ESP32', 'Real-time Bluetooth audio effects processor on ESP32'),
     year: '2026',
     visual: 'audio',
-    gif: 'assets/projects/esp32-audiofx.gif', // vraie interface, generee par le code du firmware
+    gif: 'assets/projects/esp32-audiofx.gif?v=20261017', // vraie interface, generee par le code du firmware
     cats: ['embedded', 'audio'],
     summary: L(
       'L’ESP32 reçoit la musique d’un téléphone en Bluetooth, la fait passer dans une chaîne de 15 effets réordonnable et la ressort en I2S 32 bits sur un DAC PCM5102. Un écran ST7735 affiche des menus colorés et animés ainsi que le spectre FFT du signal de sortie, et quatre potentiomètres règlent les effets en direct.',
