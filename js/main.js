@@ -1,6 +1,6 @@
-import { profile, featured, projects, stack, timeline, logos, logoStrip } from './data.js?v=20261017';
-import { UI } from './i18n.js?v=20261017';
-import { initAutomata, initNN, initMarauder } from './visuals2d.js?v=20261017';
+import { profile, featured, projects, stack, timeline, logos, logoStrip } from './data.js?v=20261017b';
+import { UI } from './i18n.js?v=20261017b';
+import { initAutomata, initNN, initMarauder } from './visuals2d.js?v=20261017b';
 
 const $ = (s, el = document) => el.querySelector(s);
 const $$ = (s, el = document) => [...el.querySelectorAll(s)];
@@ -515,7 +515,7 @@ if (mapCanvas) initMarauder(mapCanvas);
 
 // 3D scenes (Three.js from CDN). Wait for fonts so canvas labels render correctly.
 const fontsReady = Promise.race([document.fonts?.ready, new Promise((r) => setTimeout(r, 1500))]);
-fontsReady.then(() => import('./three-scenes.js?v=20261017')).then((m) => {
+fontsReady.then(() => import('./three-scenes.js?v=20261017b')).then((m) => {
   const safe = (fn) => { try { fn(); } catch (err) { console.warn('[3D]', err); } };
   safe(() => m.initHero($('#hero-canvas')));
   const fv = visual('fpga');
