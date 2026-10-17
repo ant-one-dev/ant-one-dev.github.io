@@ -1,6 +1,6 @@
 import { profile, featured, projects, stack, timeline, logos, logoStrip } from './data.js';
 import { UI } from './i18n.js';
-import { initAutomata, initNN, initMarauder, initAudio } from './visuals2d.js';
+import { initAutomata, initNN, initMarauder } from './visuals2d.js';
 
 const $ = (s, el = document) => el.querySelector(s);
 const $$ = (s, el = document) => [...el.querySelectorAll(s)];
@@ -162,8 +162,9 @@ $('#featured').innerHTML = featured.map((p) => `
   <article class="feat ${featured.indexOf(p) % 2 ? 'reverse' : ''}" id="p-${p.id}">
     <div class="feat-visual reveal" data-visual="${p.visual}">
       <div class="viz-bar"><span class="dots"><i></i><i></i><i></i></span><span>${VIZ_TITLE[p.visual] || ''}</span></div>
-      ${p.visual === 'automata' ? '<svg class="viz" viewBox="0 0 400 300"></svg>' : '<canvas></canvas>'}
-      <div class="viz-hud"></div>
+      ${p.gif ? `<img class="viz-gif" src="${p.gif}" alt="${esc(t(p.title))}" loading="lazy">`
+        : p.visual === 'automata' ? '<svg class="viz" viewBox="0 0 400 300"></svg>' : '<canvas></canvas>'}
+      ${p.gif ? '' : '<div class="viz-hud"></div>'}
       ${p.visual === 'robot' || p.visual === 'fpga' ? '<span class="viz-hint" data-i18n="projects.live3d"></span>' : ''}
     </div>
     <div class="feat-text reveal"></div>
@@ -514,12 +515,6 @@ const visual = (name) => $(`.feat-visual[data-visual="${name}"]`);
   const v = visual('nn');
   if (v) initNN($('canvas', v), (s) => hud($('.viz-hud', v), [
     ['input', `leaf_${s.sample}.jpg`], ['prediction', s.label, s.healthy ? 'ok' : 'warn'], ['confidence', `${(s.conf * 100).toFixed(1)}%`],
-  ]));
-}
-{
-  const v = visual('audio');
-  if (v) initAudio($('canvas', v), (s) => hud($('.viz-hud', v), [
-    ['effect', s.fx, 'ok'], [s.param, s.value], ['cpu', s.cpu],
   ]));
 }
 const mapCanvas = $('#project-grid .art-canvas');
