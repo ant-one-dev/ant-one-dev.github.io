@@ -18,7 +18,8 @@ export const profile = {
 };
 
 // Featured projects get a large interactive visual.
-// visual: 'robot' | 'fpga' | 'automata' | 'nn' | 'video' (plays `video`, shows `poster` before)
+// visual: 'robot' | 'fpga' | 'automata' | 'nn' | 'audio' | 'video' (plays `video`, shows `poster` before)
+// gif: shows this animation instead of a generated visual
 // cats: categories used by the project filters.
 export const featured = [
   {
@@ -123,6 +124,34 @@ export const featured = [
     tags: ['Python', 'TensorFlow / Keras', 'scikit-learn', 'FastAPI', 'Docker', 'Grad-CAM · LIME · SHAP'],
     repo: 'https://github.com/Vectra777/ML-Project',
   },
+  {
+    id: 'esp32-audiofx',
+    title: 'ESP32 Audio FX',
+    subtitle: L('Processeur d’effets audio Bluetooth temps réel sur ESP32', 'Real-time Bluetooth audio effects processor on ESP32'),
+    year: '2026',
+    visual: 'audio',
+    gif: 'assets/projects/esp32-audiofx.gif?v=20261017', // vraie interface, generee par le code du firmware
+    cats: ['embedded', 'audio'],
+    summary: L(
+      'L’ESP32 reçoit la musique d’un téléphone en Bluetooth, la fait passer dans une chaîne de 15 effets réordonnable et la ressort en I2S 32 bits sur un DAC PCM5102. Un écran ST7735 affiche des menus colorés et animés ainsi que le spectre FFT du signal de sortie, et quatre potentiomètres règlent les effets en direct.',
+      'The ESP32 receives music from a phone over Bluetooth, runs it through a reorderable chain of 15 effects and outputs it as 32-bit I2S on a PCM5102 DAC. An ST7735 screen shows colourful animated menus and the FFT spectrum of the output, and four potentiometers tweak the effects live.',
+    ),
+    bullets: L([
+      ['15 effets + Master', 'Filtres passe-bas, passe-haut et passe-bande résonants avec LFO, EQ 3 bandes, compresseur, distorsion (4 courbes), bitcrusher, ring mod, tremolo, autopan, phaser, flanger, chorus, delay ping-pong et reverb Freeverb, puis un master avec limiteur.'],
+      ['Temps réel sur deux cœurs', 'Bluetooth A2DP sur un cœur, traitement flottant par blocs de 128 trames sur l’autre (~9 % de CPU), tampon anti-gigue de 32 Ko et lignes à retard en PSRAM. Fondu de 30 ms à l’activation pour éviter les clics.'],
+      ['Architecture objet', 'Chaque effet est une classe enfant d’une classe parent qui gère les paramètres (linéaire, log, entier, choix), la prise en main des potentiomètres et sa page d’écran animée.'],
+      ['Interface & analyseur', 'Carrousel, transitions et boutons rotatifs animés à ~33 fps, FFT 1024 points avec fenêtre de Hann sur 40 bandes logarithmiques, métadonnées et commandes AVRCP.'],
+      ['Documentation', 'Un document LaTeX explique chaque effet : principe, équations, schéma-bloc et mesures obtenues en exécutant le vrai code des effets.'],
+    ], [
+      ['15 effects + Master', 'Resonant low-pass, high-pass and band-pass filters with LFO, 3-band EQ, compressor, distortion (4 curves), bitcrusher, ring mod, tremolo, autopan, phaser, flanger, chorus, ping-pong delay and Freeverb reverb, followed by a master stage with a limiter.'],
+      ['Real time on two cores', 'Bluetooth A2DP on one core, floating-point processing in 128-frame blocks on the other (~9% CPU), a 32 KB jitter buffer and delay lines in PSRAM. 30 ms crossfades on bypass avoid clicks.'],
+      ['Object-oriented design', 'Each effect is a child class of a parent class that handles parameters (linear, log, integer, choice), potentiometer pickup and its own animated screen page.'],
+      ['UI & analyser', 'Carousel, transitions and animated knobs at ~33 fps, a 1024-point FFT with a Hann window over 40 log bands, plus AVRCP metadata and controls.'],
+      ['Documentation', 'A LaTeX document explains every effect: principle, equations, block diagram and measurements made by running the actual effect code.'],
+    ]),
+    tags: ['C++17', 'ESP32', 'PlatformIO', 'FreeRTOS', 'Bluetooth A2DP', 'I2S', 'DSP', 'FFT', 'TFT ST7735', 'PCM5102'],
+    repo: 'https://github.com/ant-one-dev/esp32-audiofx',
+  },
 ];
 
 // Project cards. cats are used by the filter buttons.
@@ -130,16 +159,29 @@ export const featured = [
 // status: 'wip' for projects not published yet.
 export const projects = [
   {
-    title: L('Processeur audio Bluetooth sur ESP32', 'ESP32 Bluetooth Audio DSP'),
+    title: 'AutomateDFA Manager',
+    year: '2025',
+    cats: ['software'],
+    art: 'automata',
+    desc: L(
+      'Application Java Swing pour le cours de langages formels : édition de plusieurs automates en parallèle, graphe rendu en direct avec Graphviz, et transformations en un clic (déterminiser, compléter, standardiser, complémenter, minimiser), avec export PNG/PDF et tests de reconnaissance de mots.',
+      'Java Swing application for the formal-languages course: edit several automata side by side, see the graph rendered live with Graphviz, and apply transformations in one click (determinise, complete, standardise, complement, minimise), with PNG/PDF export and word recognition tests.',
+    ),
+    tags: ['Java 17', 'Swing', 'Graphviz', 'Maven', 'Automata theory'],
+    repo: null, // private repo: ant-one-dev/Automate2.0
+  },
+  {
+    title: 'ICE-Box 2000',
     year: '2026',
     cats: ['embedded', 'audio'],
-    art: 'spectrum',
+    img: 'assets/projects/icebox-2000.webp?v=20261017',
+    imgBg: 'linear-gradient(180deg, #323d49 0%, #323e49 62%, #343f4e 64%, #3e4756 67%, #434e5f 69%, #4a5566 73%, #4b5667 85%, #444f60 100%)', // fond du rendu 3D
     desc: L(
-      'L’ESP32 reçoit de la musique en Bluetooth, applique en temps réel 15 effets choisis depuis une interface animée (réverbération, filtres, délai…), affiche le spectre FFT sur un écran TFT ST7735 et ressort l’audio traité par un DAC PCM5102.',
-      'The ESP32 receives music over Bluetooth, applies 15 effects picked from an animated interface in real time (reverb, filters, delay…), shows the FFT spectrum on an ST7735 TFT screen and outputs the processed audio through a PCM5102 DAC.',
+      'Juke-box conçu pour l’association ICE EFREI : on pose sur le lecteur RFID une carte imprimée avec une pochette d’album, et le Raspberry Pi lance la musique correspondante sur le système audio. J’ai dessiné tout le boîtier dans Fusion 360, au millimètre près, pour y faire rentrer le Raspberry Pi, le lecteur RFID et l’électronique audio.',
+      'A jukebox designed for the ICE EFREI association: place a printed card showing an album cover on the RFID reader and the Raspberry Pi plays the matching music through the audio system. I designed the whole enclosure in Fusion 360, down to the millimetre, so that the Raspberry Pi, the RFID reader and the audio electronics fit inside.',
     ),
-    tags: ['C++', 'ESP32', 'Bluetooth', 'DSP', 'FFT', 'TFT ST7735', 'PCM5102'],
-    repo: 'https://github.com/ant-one-dev/esp32-audiofx',
+    tags: ['Python', 'Raspberry Pi', 'RFID', 'Audio', 'Fusion 360'],
+    repo: null,
   },
   {
     title: L('Traducteur Morse sur ESP32', 'ESP32 Morse Code Translator'),
@@ -212,18 +254,6 @@ export const projects = [
     ),
     tags: ['React Native', 'Expo', 'TypeScript', 'Supabase', 'Firebase Messaging'],
     repo: null,
-  },
-  {
-    title: 'AutomateDFA Manager',
-    year: '2025',
-    cats: ['software'],
-    art: 'automata',
-    desc: L(
-      'Application Java Swing pour le cours de langages formels : table de transitions, graphe dessiné en direct avec Graphviz et historique des actions. Elle vérifie si un automate est déterministe, complet ou standard, et peut le déterminiser, le compléter, le standardiser, le complémenter ou le minimiser, avec export PNG et PDF.',
-      'Java Swing application for the formal-languages course: a transition table, a graph drawn live with Graphviz and an action history. It checks whether an automaton is deterministic, complete or standard, and can determinise, complete, standardise, complement or minimise it, with PNG and PDF export.',
-    ),
-    tags: ['Java 17', 'Swing', 'Graphviz', 'Maven', 'Automata theory'],
-    repo: null, // private repo: ant-one-dev/Automate2.0
   },
   {
     title: 'TODO · Competence Tracker',

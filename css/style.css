@@ -376,6 +376,13 @@ p { margin: 0 0 1em; }
 }
 .feat-visual canvas, .feat-visual svg.viz { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
 .feat-visual video.viz { position: absolute; inset: 0; width: 100%; height: 100%; display: block; object-fit: cover; }
+.feat-visual .viz-gif {
+  position: absolute; left: 50%; top: 54%; transform: translate(-50%, -50%);
+  width: 78%; max-height: 78%; object-fit: contain;
+  image-rendering: pixelated;
+  border-radius: 10px; border: 1px solid var(--line-2);
+  box-shadow: 0 0 0 6px #05080d, 0 20px 60px -20px rgba(62, 230, 255, .45);
+}
 .feat-visual::after {
   /* window chrome scanline */
   content: ''; position: absolute; inset: 0; pointer-events: none;
@@ -480,7 +487,13 @@ p { margin: 0 0 1em; }
 .card-art { height: 170px; border-bottom: 1px solid var(--line); background: #080c13; position: relative; overflow: hidden; }
 .card-art svg { width: 100%; height: 100%; display: block; }
 .card-art img { width: 100%; height: 100%; object-fit: cover; object-position: 50% 30%; transition: transform .6s var(--ease); }
-.card:hover .card-art img { transform: scale(1.04); }.card-art .photo-chip { display: none; position: absolute; left: 10px; bottom: 10px; font: 500 .66rem var(--f-mono); letter-spacing: .08em; padding: 4px 8px; border-radius: 6px; background: rgba(6, 9, 15, .8); border: 1px solid var(--line-2); color: var(--muted); }
+.card:hover .card-art img { transform: scale(1.04); }
+.card-art img.card-img { position: relative; width: auto; height: 100%; margin: 0 auto; display: block; object-fit: contain; }
+.card-art img.card-gif {
+  width: auto; height: calc(100% - 46px); margin: 38px auto 0; display: block; object-fit: contain;
+  image-rendering: pixelated; border-radius: 6px; border: 1px solid var(--line-2);
+}
+.card-art .photo-chip { display: none; position: absolute; left: 10px; bottom: 10px; font: 500 .66rem var(--f-mono); letter-spacing: .08em; padding: 4px 8px; border-radius: 6px; background: rgba(6, 9, 15, .8); border: 1px solid var(--line-2); color: var(--muted); }
 .card-lock { font: .76rem var(--f-mono); color: var(--dim); display: inline-flex; gap: 6px; align-items: center; margin-top: 4px; }
 .card-body { padding: 22px; display: flex; flex-direction: column; gap: 12px; flex: 1; }
 .card-top { display: flex; justify-content: space-between; align-items: baseline; gap: 10px; }

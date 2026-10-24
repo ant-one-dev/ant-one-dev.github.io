@@ -1,6 +1,6 @@
-import { profile, featured, projects, stack, timeline, logos, logoStrip } from './data.js';
-import { UI } from './i18n.js';
-import { initAutomata, initNN, initMarauder } from './visuals2d.js';
+import { profile, featured, projects, stack, timeline, logos, logoStrip } from './data.js?v=20261024';
+import { UI } from './i18n.js?v=20261024';
+import { initAutomata, initNN, initMarauder } from './visuals2d.js?v=20261024';
 
 const $ = (s, el = document) => el.querySelector(s);
 const $$ = (s, el = document) => [...el.querySelectorAll(s)];
@@ -159,15 +159,16 @@ new IntersectionObserver(([e], o) => {
 }, { threshold: 0.5 }).observe(stack3d);
 
 /* ───────── featured projects ───────── */
-const VIZ_TITLE = { video: 'rviz2 · octomap · cutaway', robot: 'vigibot://sim · 4 zones', fpga: 'arty-a7 · reflex_top.vhd', automata: 'automata · recognise(word)', nn: 'leaf_cnn.keras · /predict' };
+const VIZ_TITLE = { video: 'rviz2 · octomap · cutaway', robot: 'vigibot://sim · 4 zones', fpga: 'arty-a7 · reflex_top.vhd', automata: 'automata · recognise(word)', nn: 'leaf_cnn.keras · /predict', audio: 'esp32-fx · a2dp → i2s' };
 $('#featured').innerHTML = featured.map((p) => `
   <article class="feat ${featured.indexOf(p) % 2 ? 'reverse' : ''}" id="p-${p.id}">
     <div class="feat-visual reveal" data-visual="${p.visual}">
       <div class="viz-bar"><span class="dots"><i></i><i></i><i></i></span><span>${VIZ_TITLE[p.visual] || ''}</span></div>
       ${p.visual === 'video'
         ? `<video class="viz" src="${esc(p.video)}" poster="${esc(p.poster)}" muted loop playsinline preload="none" aria-hidden="true"></video>`
+        : p.gif ? `<img class="viz-gif" src="${p.gif}" alt="${esc(t(p.title))}" loading="lazy">`
         : p.visual === 'automata' ? '<svg class="viz" viewBox="0 0 400 300"></svg>' : '<canvas></canvas>'}
-      <div class="viz-hud"></div>
+      ${p.gif ? '' : '<div class="viz-hud"></div>'}
       ${p.visual === 'robot' || p.visual === 'fpga' ? '<span class="viz-hint" data-i18n="projects.live3d"></span>' : ''}
     </div>
     <div class="feat-text reveal"></div>
@@ -377,11 +378,14 @@ const artLabel = (k) => (ART_LABEL[k] ? `<span class="card-art-label mono">${ART
 const grid = $('#project-grid');
 grid.innerHTML = featured.map((p) => `
   <article class="card feat-card reveal" data-cats="${p.cats.join(' ')}" data-feat="${p.id}">
-    <div class="card-art">${p.poster ? `<img src="${esc(p.poster)}" alt="" loading="lazy">` : ART[p.visual] || ''}${artLabel(p.visual)}<span class="card-badge featured"></span></div>
+    <div class="card-art">${p.poster ? `<img src="${esc(p.poster)}" alt="" loading="lazy">`
+      : p.gif ? `<img class="card-gif" src="${p.gif}" alt="" loading="lazy">` : ART[p.visual] || ''}${artLabel(p.visual)}<span class="card-badge featured"></span></div>
     <div class="card-body"></div>
   </article>`).join('') + projects.map((p, i) => `
   <article class="card reveal" data-cats="${p.cats.join(' ')}" data-i="${i}">
-    <div class="card-art">${ART[p.art] || ''}${artLabel(p.art)}<span class="card-badge" hidden></span></div>
+    <div class="card-art"${p.imgBg ? ` style="background:${p.imgBg}"` : ''}>${p.img
+      ? `<img class="card-img" src="${p.img}" alt="" loading="lazy">`
+      : ART[p.art] || ''}${artLabel(p.art)}<span class="card-badge" hidden></span></div>
     <div class="card-body"></div>
   </article>`).join('') + `
   <article class="card more reveal" data-cats="all">
@@ -592,7 +596,7 @@ if (mapCanvas) initMarauder(mapCanvas);
 
 // 3D scenes (Three.js from CDN). Wait for fonts so canvas labels render correctly.
 const fontsReady = Promise.race([document.fonts?.ready, new Promise((r) => setTimeout(r, 1500))]);
-fontsReady.then(() => import('./three-scenes.js')).then((m) => {
+fontsReady.then(() => import('./three-scenes.js?v=20261024')).then((m) => {
   const safe = (fn) => { try { fn(); } catch (err) { console.warn('[3D]', err); } };
   safe(() => m.initHero($('#hero-canvas')));
   const fv = visual('fpga');
