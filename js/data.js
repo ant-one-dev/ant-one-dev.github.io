@@ -18,9 +18,38 @@ export const profile = {
 };
 
 // Featured projects get a large interactive visual.
-// visual: 'robot' | 'fpga' | 'automata' | 'nn'
+// visual: 'robot' | 'fpga' | 'automata' | 'nn' | 'video' (plays `video`, shows `poster` before)
 // cats: categories used by the project filters.
 export const featured = [
+  {
+    id: 'octomap',
+    title: 'OctoMap Drone Explorer',
+    subtitle: L('Drone LiDAR qui cartographie un musée en 3D, en temps réel', 'A LiDAR drone mapping a museum in 3D, in real time'),
+    year: '2026',
+    visual: 'video',
+    video: 'assets/projects/octomap-scan.mp4',
+    poster: 'assets/projects/octomap-scan.jpg',
+    cats: ['embedded', 'software'],
+    summary: L(
+      'Un drone équipé d’un LiDAR 3D survole un musée de quatre niveaux simulé sous Gazebo et construit une carte 3D probabiliste en temps réel avec ROS 2. J’ai réécrit en Python le cœur d’OctoMap (log-odds, lancer de rayons, clamping, élagage de l’octree, format .bt), puis vérifié les cartes exportées avec la bibliothèque officielle.',
+      'A drone with a 3D LiDAR flies through a four-level museum simulated in Gazebo and builds a probabilistic 3D map in real time with ROS 2. I rebuilt the core of OctoMap in Python (log-odds, ray casting, clamping, octree pruning, the .bt format), then checked the exported maps with the official library.',
+    ),
+    bullets: L([
+      ['Carte probabiliste', 'Chaque rayon marque son point d’arrivée comme occupé (+0,85) et les voxels traversés comme libres (−0,41), en log-odds. Un point fantôme disparaît après trois rayons.'],
+      ['Octree & format .bt', 'Arbre à 16 niveaux où huit feuilles identiques fusionnent. Les fichiers .bt s’ouvrent avec liboctomap : même nombre de nœuds, même mémoire, 2000/2000 voxels identiques.'],
+      ['Pipeline ROS 2', 'Gazebo, bridge ROS 2, nœud de cartographie, tour automatique du sous-sol au toit, caméra embarquée et deux vues RViz.'],
+      ['Mémoire mesurée', 'Sur 2,7 M de points LiDAR : nuage brut 32,5 Mo, carte .bt à 10 cm 6,6 Mo. C’est l’espace libre qui coûte le plus (~30 M de voxels contre 0,6 M occupés).'],
+      ['Réglage du clamping', 'Le même vol rejoué avec plusieurs bornes : −1,0 au lieu de −2,0 économise 17 % de RAM avec la même précision.'],
+    ], [
+      ['Probabilistic map', 'Each beam marks its end point as occupied (+0.85) and the voxels it crosses as free (−0.41), in log-odds. A ghost point disappears after three beams.'],
+      ['Octree & .bt format', 'A 16-level tree where eight identical leaves merge. The .bt files open in liboctomap: same node count, same memory, 2000/2000 identical voxels.'],
+      ['ROS 2 pipeline', 'Gazebo, the ROS 2 bridge, a mapping node, an automatic tour from basement to roof, an onboard camera and two RViz views.'],
+      ['Measured memory', 'For 2.7 M LiDAR points: raw cloud 32.5 MB, .bt map at 10 cm 6.6 MB. Free space is what costs the most (~30 M voxels vs 0.6 M occupied).'],
+      ['Clamping tuning', 'The same flight replayed with several bounds: −1.0 instead of −2.0 saves 17 % of RAM with the same accuracy.'],
+    ]),
+    tags: ['ROS 2 Jazzy', 'Gazebo Harmonic', 'Python', 'NumPy', '3D LiDAR', 'OctoMap', 'RViz', 'pytest'],
+    repo: 'https://github.com/ant-one-dev/octomap-drone-explorer',
+  },
   {
     id: 'vigibot',
     title: 'Vigibot',
@@ -94,29 +123,6 @@ export const featured = [
     tags: ['Python', 'TensorFlow / Keras', 'scikit-learn', 'FastAPI', 'Docker', 'Grad-CAM · LIME · SHAP'],
     repo: 'https://github.com/Vectra777/ML-Project',
   },
-  {
-    id: 'automata',
-    title: 'AutomateDFA Manager',
-    subtitle: L('Application pour créer, analyser et transformer des automates finis', 'Desktop app to build, analyse and transform finite automata'),
-    year: '2025',
-    visual: 'automata',
-    cats: ['software'],
-    summary: L(
-      'Une application Java Swing pour le cours de langages formels : on édite plusieurs automates en parallèle, on les voit dessinés en direct et on applique chaque transformation classique en un clic.',
-      'A Java Swing application for the formal-languages course: edit several automata side by side, see them drawn live, and apply every classic transformation in one click.',
-    ),
-    bullets: L([
-      ['Interface en trois panneaux', 'Table de transitions à gauche, graphe rendu en direct avec Graphviz au centre, historique des actions et points de cours associés à droite.'],
-      ['Analyse & transformations', 'Vérifie si un automate est déterministe, complet ou standard, et peut le déterminiser, le compléter, le standardiser, le complémenter ou le minimiser.'],
-      ['Fichiers & tests', 'Format de fichier .atx maison, export des graphes en PNG, export de l’historique en PDF et tests de reconnaissance de mots.'],
-    ], [
-      ['Three-panel interface', 'Transition table on the left, a live graph rendered with Graphviz in the centre, and an action history with related course notes on the right.'],
-      ['Analysis & transformations', 'Checks whether an automaton is deterministic, complete or standard, and can determinise, complete, standardise, complement or minimise it.'],
-      ['Files & testing', 'Custom .atx file format, PNG export of graphs, PDF export of the history, and word recognition tests.'],
-    ]),
-    tags: ['Java 17', 'Swing', 'Graphviz', 'Maven', 'Automata theory'],
-    repo: null, // private repo: ant-one-dev/Automate2.0
-  },
 ];
 
 // Project cards. cats are used by the filter buttons.
@@ -128,13 +134,12 @@ export const projects = [
     year: '2026',
     cats: ['embedded', 'audio'],
     art: 'spectrum',
-    status: 'wip',
     desc: L(
-      'L’ESP32 reçoit de la musique en Bluetooth, applique en temps réel des effets choisis depuis un menu (réverbération, filtres passe-bas et passe-haut, délai…), affiche le spectre sur un écran TFT ST7735 et ressort l’audio traité par un DAC.',
-      'The ESP32 receives music over Bluetooth, applies effects picked from a menu in real time (reverb, low-pass and high-pass filters, delay…), shows the spectrum on an ST7735 TFT screen and outputs the processed audio through a DAC.',
+      'L’ESP32 reçoit de la musique en Bluetooth, applique en temps réel 15 effets choisis depuis une interface animée (réverbération, filtres, délai…), affiche le spectre FFT sur un écran TFT ST7735 et ressort l’audio traité par un DAC PCM5102.',
+      'The ESP32 receives music over Bluetooth, applies 15 effects picked from an animated interface in real time (reverb, filters, delay…), shows the FFT spectrum on an ST7735 TFT screen and outputs the processed audio through a PCM5102 DAC.',
     ),
-    tags: ['C++', 'ESP32', 'Bluetooth', 'DSP', 'TFT ST7735', 'DAC'],
-    repo: null,
+    tags: ['C++', 'ESP32', 'Bluetooth', 'DSP', 'FFT', 'TFT ST7735', 'PCM5102'],
+    repo: 'https://github.com/ant-one-dev/esp32-audiofx',
   },
   {
     title: L('Traducteur Morse sur ESP32', 'ESP32 Morse Code Translator'),
@@ -197,6 +202,30 @@ export const projects = [
     repo: null,
   },
   {
+    title: 'YoStream',
+    year: '2024',
+    cats: ['software'],
+    art: 'stream',
+    desc: L(
+      'Application mobile de streaming de films en React Native (Expo) : connexion, accueil en carrousels, catalogue avec recherche et filtres par genre, fiche film avec bande-annonce, lecteur vidéo plein écran, favoris et paramètres. Données et comptes sur Supabase, notifications push avec Firebase Cloud Messaging.',
+      'Mobile movie-streaming app in React Native (Expo): sign-in, a home screen of carousels, a catalogue with search and genre filters, a movie page with its trailer, a full-screen video player, favourites and settings. Data and accounts on Supabase, push notifications with Firebase Cloud Messaging.',
+    ),
+    tags: ['React Native', 'Expo', 'TypeScript', 'Supabase', 'Firebase Messaging'],
+    repo: null,
+  },
+  {
+    title: 'AutomateDFA Manager',
+    year: '2025',
+    cats: ['software'],
+    art: 'automata',
+    desc: L(
+      'Application Java Swing pour le cours de langages formels : table de transitions, graphe dessiné en direct avec Graphviz et historique des actions. Elle vérifie si un automate est déterministe, complet ou standard, et peut le déterminiser, le compléter, le standardiser, le complémenter ou le minimiser, avec export PNG et PDF.',
+      'Java Swing application for the formal-languages course: a transition table, a graph drawn live with Graphviz and an action history. It checks whether an automaton is deterministic, complete or standard, and can determinise, complete, standardise, complement or minimise it, with PNG and PDF export.',
+    ),
+    tags: ['Java 17', 'Swing', 'Graphviz', 'Maven', 'Automata theory'],
+    repo: null, // private repo: ant-one-dev/Automate2.0
+  },
+  {
     title: 'TODO · Competence Tracker',
     year: '2025',
     cats: ['software'],
@@ -257,6 +286,18 @@ export const projects = [
     repo: null,
   },
   {
+    title: 'Hoot-Hoot Adventure',
+    year: '2024',
+    cats: ['software'],
+    art: 'owl',
+    desc: L(
+      'Jeu de plateforme en Pygame avec un moteur physique fait main. On lance la chouette au lance-pierre sur une trajectoire parabolique. Les blocs de glace la font glisser, les blocs de gravité la font tomber vers le haut, et chaque choc la fait rebondir et lui coûte de l’énergie. Huit niveaux, des ennemis et un éditeur de niveaux.',
+      'Platform game in Pygame with a hand-made physics engine. You launch the owl from a slingshot along a parabolic path. Ice blocks make it slide, gravity blocks make it fall upwards, and every hit bounces it and costs it energy. Eight levels, enemies and a level editor.',
+    ),
+    tags: ['Python', 'Pygame', 'Physics engine', 'Level editor'],
+    repo: null,
+  },
+  {
     title: L('Éditeur d’images en Rust', 'Rust Image Editor'),
     year: '2025',
     cats: ['software'],
@@ -277,7 +318,7 @@ export const stack = [
   { layer: L('Vision & IA embarquée', 'Vision & Edge AI'), code: 'L5', color: '#ff5c8a',
     items: ['OpenCV', 'YOLO', 'TensorFlow / Keras', 'MediaPipe', 'scikit-learn', 'Matlab / Simulink'] },
   { layer: L('Linux embarqué & robotique', 'Embedded Linux & Robotics'), code: 'L4', color: '#4ade80',
-    items: ['Raspberry Pi', 'Linux', 'Picamera2', L('Capteurs & actionneurs', 'Sensors & actuators'), 'Git'] },
+    items: ['ROS 2', 'Gazebo', 'LiDAR', 'Raspberry Pi', 'Linux', 'Picamera2', L('Capteurs & actionneurs', 'Sensors & actuators'), 'Git'] },
   { layer: L('Bus & protocoles', 'Buses & Protocols'), code: 'L3', color: '#ffd166',
     items: ['UART', 'I²C', 'SPI', 'CAN', 'MQTT', 'Bluetooth'] },
   { layer: L('Firmware & microcontrôleurs', 'Firmware & MCUs'), code: 'L2', color: '#3ee6ff',

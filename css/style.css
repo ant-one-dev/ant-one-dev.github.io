@@ -231,6 +231,8 @@ p { margin: 0 0 1em; }
 
 /* ───────────────────────── Sections ───────────────────────── */
 .section { position: relative; padding-block: clamp(80px, 12vw, 150px); }
+/* menu links: land on the section title, just under the fixed header, not on the section's top padding */
+.section[id] { scroll-margin-top: calc(32px - clamp(80px, 12vw, 150px)); }
 .section-head { margin-bottom: clamp(40px, 6vw, 70px); max-width: 820px; }
 .section-tag {
   display: inline-flex; align-items: center; gap: 10px;
@@ -373,6 +375,7 @@ p { margin: 0 0 1em; }
   box-shadow: 0 40px 100px -50px rgba(62, 230, 255, .35);
 }
 .feat-visual canvas, .feat-visual svg.viz { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
+.feat-visual video.viz { position: absolute; inset: 0; width: 100%; height: 100%; display: block; object-fit: cover; }
 .feat-visual::after {
   /* window chrome scanline */
   content: ''; position: absolute; inset: 0; pointer-events: none;
@@ -477,8 +480,7 @@ p { margin: 0 0 1em; }
 .card-art { height: 170px; border-bottom: 1px solid var(--line); background: #080c13; position: relative; overflow: hidden; }
 .card-art svg { width: 100%; height: 100%; display: block; }
 .card-art img { width: 100%; height: 100%; object-fit: cover; object-position: 50% 30%; transition: transform .6s var(--ease); }
-.card:hover .card-art img { transform: scale(1.04); }
-.card-art .photo-chip { display: none; position: absolute; left: 10px; bottom: 10px; font: 500 .66rem var(--f-mono); letter-spacing: .08em; padding: 4px 8px; border-radius: 6px; background: rgba(6, 9, 15, .8); border: 1px solid var(--line-2); color: var(--muted); }
+.card:hover .card-art img { transform: scale(1.04); }.card-art .photo-chip { display: none; position: absolute; left: 10px; bottom: 10px; font: 500 .66rem var(--f-mono); letter-spacing: .08em; padding: 4px 8px; border-radius: 6px; background: rgba(6, 9, 15, .8); border: 1px solid var(--line-2); color: var(--muted); }
 .card-lock { font: .76rem var(--f-mono); color: var(--dim); display: inline-flex; gap: 6px; align-items: center; margin-top: 4px; }
 .card-body { padding: 22px; display: flex; flex-direction: column; gap: 12px; flex: 1; }
 .card-top { display: flex; justify-content: space-between; align-items: baseline; gap: 10px; }

@@ -30,6 +30,8 @@ function applyStatic() {
   $$('[data-i18n-title]').forEach((el) => { el.title = tr(el.dataset.i18nTitle); el.setAttribute('aria-label', tr(el.dataset.i18nTitle)); });
   $$('[data-i18n-aria]').forEach((el) => { el.setAttribute('aria-label', tr(el.dataset.i18nAria)); });
   $$('#lang-toggle [data-l]').forEach((s) => s.classList.toggle('on', s.dataset.l === lang));
+  // the CV exists in French and in English
+  $$('a[href*="CV_Antoine_Mroczko"]').forEach((a) => { a.href = `assets/CV_Antoine_Mroczko${lang === 'en' ? '_EN' : ''}.pdf`; });
 }
 function setLang(next) {
   lang = next;
@@ -157,12 +159,14 @@ new IntersectionObserver(([e], o) => {
 }, { threshold: 0.5 }).observe(stack3d);
 
 /* ───────── featured projects ───────── */
-const VIZ_TITLE = { robot: 'vigibot://sim · 4 zones', fpga: 'arty-a7 · reflex_top.vhd', automata: 'automata · recognise(word)', nn: 'leaf_cnn.keras · /predict' };
+const VIZ_TITLE = { video: 'rviz2 · octomap · cutaway', robot: 'vigibot://sim · 4 zones', fpga: 'arty-a7 · reflex_top.vhd', automata: 'automata · recognise(word)', nn: 'leaf_cnn.keras · /predict' };
 $('#featured').innerHTML = featured.map((p) => `
   <article class="feat ${featured.indexOf(p) % 2 ? 'reverse' : ''}" id="p-${p.id}">
     <div class="feat-visual reveal" data-visual="${p.visual}">
       <div class="viz-bar"><span class="dots"><i></i><i></i><i></i></span><span>${VIZ_TITLE[p.visual] || ''}</span></div>
-      ${p.visual === 'automata' ? '<svg class="viz" viewBox="0 0 400 300"></svg>' : '<canvas></canvas>'}
+      ${p.visual === 'video'
+        ? `<video class="viz" src="${esc(p.video)}" poster="${esc(p.poster)}" muted loop playsinline preload="none" aria-hidden="true"></video>`
+        : p.visual === 'automata' ? '<svg class="viz" viewBox="0 0 400 300"></svg>' : '<canvas></canvas>'}
       <div class="viz-hud"></div>
       ${p.visual === 'robot' || p.visual === 'fpga' ? '<span class="viz-hint" data-i18n="projects.live3d"></span>' : ''}
     </div>
@@ -189,6 +193,61 @@ onLang.push(renderFeatured);
 
 /* ───────── project cards ───────── */
 const SVG = (inner) => `<svg viewBox="0 0 400 170" preserveAspectRatio="xMidYMid slice" aria-hidden="true">${inner}</svg>`;
+
+// Hoot-Hoot Adventure: the game's sprites, moved with the game's physics. The owl's path is
+// computed once here (game pixels, g = 981 px/s², ice drift = speed × 0.98 per frame at 60 fps)
+// and played back as a plain SVG animation, so it costs nothing at run time.
+const hootArt = (() => {
+  const A = 'assets/projects/hoot', px = (v) => +(v / 2).toFixed(1);   // 800×340 game px → 400×170 viewBox
+  const G = 981, FPS = 30, x0 = 70, y0 = 200, land = { x: 440, y: 220 }, angle = 60 * Math.PI / 180;
+  const tf = Math.sqrt(((land.x - x0) * Math.tan(angle) + (land.y - y0)) * 2 / G);
+  const vx = (land.x - x0) / tf, vy = vx * Math.tan(angle);
+  const pts = [];
+  const wait = 0.5;                                        // owl waits on the launcher
+  for (let t = 0; t < wait; t += 1 / FPS) pts.push([x0, y0]);
+  for (let t = 0; t < tf; t += 1 / FPS) pts.push([x0 + vx * t, y0 - vy * t + G * t * t / 2]);
+  const landAt = pts.length;
+  let x = land.x, v = vx;                                  // lands with the speed of its flight
+  while (x + 35 < 705) { pts.push([x, land.y]); v *= 0.98 ** (60 / FPS); x += v / FPS; }   // slides to the gravity block
+  const flipAt = pts.length;
+  let y = land.y, up = 0;                                  // gravity flips: falls up to the platform above
+  while (y > 190) { up += G / FPS; y = Math.max(190, y - up / FPS); v *= 0.98 ** (60 / FPS); x += v / FPS; pts.push([x, y]); }
+  for (let i = 0; i < FPS * 1.3; i++) pts.push([x, y]);
+  const n = pts.length, dur = (n / FPS).toFixed(2), kt = (i) => (i / (n - 1)).toFixed(4);
+  const feather = 620, gotAt = pts.findIndex(([px_], i) => i > landAt && px_ + 60 > feather);
+  const owlPath = pts.map(([a, b]) => `${px(a)} ${px(b)}`).join(';');
+  const show = (from, to) => `<animate attributeName="opacity" calcMode="discrete" dur="${dur}s" repeatCount="indefinite"
+      values="${from ? '0;' : ''}1;0" keyTimes="${from ? `0;${kt(from)};` : '0;'}${kt(to)}"/>`;
+  // An enemy going back and forth between two points (game px, top-left corner), cycling its frames.
+  // Every range below was checked so that nothing ever touches the owl's path.
+  const mob = ({ name, n: count, x1, x2 = x1, y1, y2 = y1, w = 50, h = 50, d = 4, phase = 0, flip = false, frame = 0.14 }) => {
+    const cx = (x) => px(x) + px(w) / 2;
+    const move = x1 === x2 && y1 === y2 ? '' : `<animateTransform attributeName="transform" type="translate" dur="${d}s" begin="-${phase}s" repeatCount="indefinite"
+        values="${cx(x1)} ${px(y1)};${cx(x2)} ${px(y2)};${cx(x1)} ${px(y1)}"/>`;
+    const turn = flip ? `<animateTransform attributeName="transform" type="scale" calcMode="discrete" dur="${d}s" begin="-${phase}s" repeatCount="indefinite" values="-1 1;1 1" keyTimes="0;.5"/>` : '';
+    return `<g transform="translate(${cx(x1)} ${px(y1)})">${move}<g>${turn}
+      ${Array.from({ length: count }, (_, i) => `<image href="${A}/${name}${i + (name === 'hand' || name === 'octopus' ? 0 : 1)}.png" x="${-px(w) / 2}" width="${px(w)}" height="${px(h)}" style="image-rendering:pixelated" opacity="${i ? 0 : 1}">
+        <animate attributeName="opacity" calcMode="discrete" dur="${(count * frame).toFixed(2)}s" repeatCount="indefinite"
+          values="${Array.from({ length: count }, (_, j) => (j === i ? 1 : 0)).join(';')}"/></image>`).join('')}</g></g>`;
+  };
+  return SVG(`<image href="${A}/scene.jpg" width="400" height="170" style="image-rendering:pixelated"/>
+    ${mob({ name: 'donut', n: 4, x1: 212, x2: 250, y1: 190, w: 100, h: 100, d: 5, flip: true, frame: 0.2 })}
+    ${mob({ name: 'rabbit', n: 4, x1: 560, x2: 610, y1: 90, d: 3.5, phase: 1, flip: true })}
+    ${mob({ name: 'hand', n: 4, x1: 660, y1: 90, h: 60, frame: 0.22 })}
+    ${mob({ name: 'ghost', n: 2, x1: 8, x2: 40, y1: 20, y2: 40, d: 4, frame: 0.3 })}
+    ${mob({ name: 'octopus', n: 4, x1: 600, x2: 740, y1: 8, y2: 22, d: 7, phase: 2, flip: true, frame: 0.16 })}
+    <image href="${A}/feather.png" x="${px(feather)}" y="${px(260)}" width="15" height="15" style="image-rendering:pixelated">${show(0, gotAt)}</image>
+    <g><animateTransform attributeName="transform" type="translate" dur="${dur}s" repeatCount="indefinite" values="${owlPath}"/>
+      <animate attributeName="opacity" dur="${dur}s" repeatCount="indefinite" values="0;1;1;0" keyTimes="0;${kt(6)};${kt(n - 10)};1"/>
+      <image href="${A}/owl_rest.png" width="35" height="35" style="image-rendering:pixelated">
+        <animate attributeName="opacity" calcMode="discrete" dur="${dur}s" repeatCount="indefinite" values="1;0;1;0" keyTimes="0;${kt(wait * FPS)};${kt(landAt)};${kt(flipAt)}"/></image>
+      <image href="${A}/owl_fly.png" width="35" height="35" style="image-rendering:pixelated" opacity="0">
+        <animate attributeName="opacity" calcMode="discrete" dur="${dur}s" repeatCount="indefinite" values="0;1;0" keyTimes="0;${kt(wait * FPS)};${kt(landAt)}"/></image>
+      <image href="${A}/owl_rest.png" width="35" height="35" transform="translate(0 35) scale(1 -1)" style="image-rendering:pixelated" opacity="0">
+        <animate attributeName="opacity" calcMode="discrete" dur="${dur}s" repeatCount="indefinite" values="0;1" keyTimes="0;${kt(flipAt)}"/></image></g>
+    <text x="30" y="24" fill="#8d9aae" font-family="JetBrains Mono" font-size="11">pygame · parabolic launch</text>`);
+})();
+
 const ART = {
   spectrum: SVG(`<rect width="400" height="170" fill="#0b0d16"/>
     <defs><linearGradient id="spg" x1="0" y1="1" x2="0" y2="0"><stop offset="0" stop-color="#3ee6ff"/><stop offset=".6" stop-color="#8b7bff"/><stop offset="1" stop-color="#ff5c8a"/></linearGradient></defs>
@@ -250,7 +309,17 @@ const ART = {
     <path d="M30 50 H370" stroke="#2a3443"/>
     ${[[1, 'Ada', 36, 'London'], [2, 'Linus', 54, 'Helsinki'], [3, 'Grace', 85, 'NYC'], [4, 'Alan', 41, 'Bletchley']].map((r, j) => r.map((v, i) => `<text x="${40 + i * 85}" y="${72 + j * 22}" fill="${j === 1 ? '#e6edf6' : '#8d9aae'}" font-family="JetBrains Mono" font-size="12">${v}</text>`).join('')).join('')}
     <rect x="30" y="81" width="340" height="20" rx="4" fill="rgba(62,230,255,.08)"/>`),
-  marauder: '<canvas class="art-canvas" aria-hidden="true"></canvas>',
+  marauder: '<canvas class="art-canvas marauder-canvas" aria-hidden="true"></canvas>',
+  owl: hootArt,
+  stream: SVG(`<rect width="400" height="170" fill="#0e0b16"/>
+    <rect x="150" y="14" width="100" height="150" rx="14" fill="#141022" stroke="#3a3354" stroke-width="2"/>
+    <defs><clipPath id="yoclip"><rect x="160" y="30" width="80" height="62"/></clipPath></defs>
+    <g clip-path="url(#yoclip)"><g>${[0, 1, 2, 3, 4].map((i) => `<rect x="${162 + i * 46}" y="34" width="38" height="54" rx="5" fill="${['#8b7bff', '#ff5c8a', '#3ee6ff', '#ffd166', '#8b7bff'][i]}" opacity=".75"/>`).join('')}
+      <animateTransform attributeName="transform" type="translate" values="0 0;-46 0;-46 0;-92 0;-92 0;0 0" keyTimes="0;.2;.45;.65;.9;1" dur="6s" repeatCount="indefinite"/></g></g>
+    <rect x="160" y="100" width="80" height="44" rx="6" fill="#1d1830"/>
+    <path d="M194 112 L194 132 L211 122Z" fill="#e6edf6"/>
+    <rect x="166" y="150" width="68" height="3" rx="1.5" fill="#3a3354"/><rect x="166" y="150" width="20" height="3" rx="1.5" fill="#ff5c8a"><animate attributeName="width" values="4;68" dur="6s" repeatCount="indefinite"/></rect>
+    <text x="30" y="24" fill="#8d9aae" font-family="JetBrains Mono" font-size="11">React Native · Supabase</text>`),
   erd: SVG(`<rect width="400" height="170" fill="#0b0f17"/>
     ${[['Artist', 40, 46, ['id', 'name', 'bio']], ['Artwork', 160, 84, ['id', 'title', 'artist_id']], ['Exhibition', 280, 46, ['id', 'gallery_id', 'date']]].map(([t, x, y, cols]) => `<rect x="${x}" y="${y}" width="96" height="${22 + cols.length * 16}" rx="6" fill="#121a26" stroke="#2a3443"/><rect x="${x}" y="${y}" width="96" height="20" rx="6" fill="#1e3a5f"/><text x="${x + 8}" y="${y + 14}" fill="#e6edf6" font-family="JetBrains Mono" font-size="10" font-weight="700">${t}</text>${cols.map((c, i) => `<text x="${x + 8}" y="${y + 34 + i * 16}" fill="${c.endsWith('id') ? '#ffd166' : '#8d9aae'}" font-family="JetBrains Mono" font-size="9.5">${c}</text>`).join('')}`).join('')}
     <path d="M136 80 C150 80 145 132 160 132" stroke="#3ee6ff" stroke-width="1.5" fill="none" stroke-dasharray="4 3"><animate attributeName="stroke-dashoffset" values="14;0" dur="1s" repeatCount="indefinite"/></path>
@@ -308,7 +377,7 @@ const artLabel = (k) => (ART_LABEL[k] ? `<span class="card-art-label mono">${ART
 const grid = $('#project-grid');
 grid.innerHTML = featured.map((p) => `
   <article class="card feat-card reveal" data-cats="${p.cats.join(' ')}" data-feat="${p.id}">
-    <div class="card-art">${ART[p.visual] || ''}${artLabel(p.visual)}<span class="card-badge featured"></span></div>
+    <div class="card-art">${p.poster ? `<img src="${esc(p.poster)}" alt="" loading="lazy">` : ART[p.visual] || ''}${artLabel(p.visual)}<span class="card-badge featured"></span></div>
     <div class="card-body"></div>
   </article>`).join('') + projects.map((p, i) => `
   <article class="card reveal" data-cats="${p.cats.join(' ')}" data-i="${i}">
@@ -507,7 +576,18 @@ const visual = (name) => $(`.feat-visual[data-visual="${name}"]`);
     ['input', `leaf_${s.sample}.jpg`], ['prediction', s.label, s.healthy ? 'ok' : 'warn'], ['confidence', `${(s.conf * 100).toFixed(1)}%`],
   ]));
 }
-const mapCanvas = $('#project-grid .art-canvas');
+{
+  // recorded RViz view: plays only while on screen, stays on the poster with reduced motion
+  const v = visual('video');
+  if (v) {
+    hud($('.viz-hud', v), [['voxel', '10 cm'], ['octree', '16 levels'], ['export', '.bt ✓ liboctomap', 'ok']]);
+    const vid = $('video', v);
+    if (!reduceMotion) {
+      new IntersectionObserver(([e]) => { if (e.isIntersecting) vid.play().catch(() => {}); else vid.pause(); }, { threshold: 0.3 }).observe(vid);
+    }
+  }
+}
+const mapCanvas = $('#project-grid .marauder-canvas');
 if (mapCanvas) initMarauder(mapCanvas);
 
 // 3D scenes (Three.js from CDN). Wait for fonts so canvas labels render correctly.
