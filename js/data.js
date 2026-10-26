@@ -158,7 +158,7 @@ export const featured = [
     subtitle: L('Laboratoire interactif de communications numériques sous MATLAB', 'Interactive digital communications lab in MATLAB'),
     year: '2026',
     visual: 'comms',
-    gif: 'assets/projects/modulationlab.gif?v=20261026', // La Joconde reçue à 32, 64 et 128 px quand le bruit augmente
+    gif: 'assets/projects/modulationlab.gif?v=20261026b', // La Joconde reçue avec 5 modulations x 4 codages quand le bruit augmente
     cats: ['embedded', 'software'],
     summary: L(
       'Une application MATLAB qui simule une chaîne de transmission numérique complète : CRC, code correcteur, codage de ligne ou modulation, canal à bruit blanc gaussien, puis démodulation, décodage et vérification. Tout est codé à la main, sans toolbox, et le taux d’erreur simulé de chaque schéma est vérifié contre la théorie.',
