@@ -152,6 +152,34 @@ export const featured = [
     tags: ['C++17', 'ESP32', 'PlatformIO', 'FreeRTOS', 'Bluetooth A2DP', 'I2S', 'DSP', 'FFT', 'TFT ST7735', 'PCM5102'],
     repo: 'https://github.com/ant-one-dev/esp32-audiofx',
   },
+  {
+    id: 'modulationlab',
+    title: 'ModulationLab',
+    subtitle: L('Laboratoire interactif de communications numériques sous MATLAB', 'Interactive digital communications lab in MATLAB'),
+    year: '2026',
+    visual: 'comms',
+    gif: 'assets/projects/modulationlab.gif?v=20261026', // La Joconde reçue à 32, 64 et 128 px quand le bruit augmente
+    cats: ['embedded', 'software'],
+    summary: L(
+      'Une application MATLAB qui simule une chaîne de transmission numérique complète : CRC, code correcteur, codage de ligne ou modulation, canal à bruit blanc gaussien, puis démodulation, décodage et vérification. Tout est codé à la main, sans toolbox, et le taux d’erreur simulé de chaque schéma est vérifié contre la théorie.',
+      'A MATLAB app that simulates a complete digital transmission chain: CRC, error-correcting code, line coding or modulation, an additive white Gaussian noise channel, then demodulation, decoding and checking. Everything is written by hand with no toolbox, and the simulated error rate of every scheme is checked against theory.',
+    ),
+    bullets: L([
+      ['23 schémas', 'NRZ, RZ, Manchester, AMI et 2B1Q en bande de base ; OOK, BASK, M-ASK et M-PSK avec M au choix, FSK non cohérente, 16/64-QAM et 16/32-APSK avec les rapports d’anneaux du DVB-S2.'],
+      ['Codage canal', 'CRC-8 et CRC-16, Hamming (7,4) par syndrome, codes convolutifs K=3 et K=7 avec un décodeur de Viterbi. L’Eb/N0 est compté par bit d’information pour mesurer le vrai gain de codage : environ 3 dB pour K=7 en QPSK à 10⁻⁴.'],
+      ['Interface en temps réel', 'Un seul écran : bits alignés sur la porteuse modulée, constellation, diagramme de l’œil, densité spectrale avec la bande à 99 %, courbes de TEB superposables, et La Joconde transmise en couleur pour voir les erreurs.'],
+      ['Validé contre la théorie', 'Une suite de tests lancée par GitHub Actions vérifie les valeurs de contrôle des CRC, les décodeurs, le codage de Gray et un TEB simulé à moins de 15 % de la théorie pour chaque schéma.'],
+      ['Ce que montrent les mesures', 'Sur 47 000 trames très bruitées, le CRC-8 a laissé passer environ 1 trame corrompue sur 240, le CRC-16 aucune. Sans entrelacement, Hamming dégrade la 4-FSK, dont les erreurs arrivent par paires.'],
+    ], [
+      ['23 schemes', 'NRZ, RZ, Manchester, AMI and 2B1Q in baseband; OOK, BASK, M-ASK and M-PSK with a selectable M, non-coherent FSK, 16/64-QAM and 16/32-APSK with DVB-S2 ring ratios.'],
+      ['Channel coding', 'CRC-8 and CRC-16, syndrome-decoded Hamming (7,4), K=3 and K=7 convolutional codes with a Viterbi decoder. Eb/N0 is counted per information bit to measure the real coding gain: about 3 dB for K=7 on QPSK at 10⁻⁴.'],
+      ['Real-time interface', 'One screen: bits aligned with the modulated carrier, constellation, eye diagram, power spectral density with the 99% band, overlaid BER curves, and the Mona Lisa sent in colour to see the errors.'],
+      ['Checked against theory', 'A test suite run by GitHub Actions checks the CRC check values, the decoders, the Gray mapping and a simulated BER within 15% of theory for every scheme.'],
+      ['What the measurements show', 'Over 47,000 heavily corrupted frames, CRC-8 let about 1 in 240 slip through and CRC-16 none. Without interleaving, Hamming makes 4-FSK worse because its errors come in pairs.'],
+    ]),
+    tags: ['MATLAB', 'Digital modulation', 'Channel coding', 'Viterbi', 'CRC', 'AWGN', 'DSP', 'GitHub Actions'],
+    repo: 'https://github.com/ant-one-dev/ModulationLab',
+  },
 ];
 
 // Project cards. cats are used by the filter buttons.

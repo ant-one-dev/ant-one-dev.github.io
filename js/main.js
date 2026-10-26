@@ -1,4 +1,4 @@
-import { profile, featured, projects, stack, timeline, logos, logoStrip } from './data.js?v=20261024';
+import { profile, featured, projects, stack, timeline, logos, logoStrip } from './data.js?v=20261026';
 import { UI } from './i18n.js?v=20261024';
 import { initAutomata, initNN, initMarauder } from './visuals2d.js?v=20261024';
 
@@ -159,7 +159,7 @@ new IntersectionObserver(([e], o) => {
 }, { threshold: 0.5 }).observe(stack3d);
 
 /* ───────── featured projects ───────── */
-const VIZ_TITLE = { video: 'rviz2 · octomap · cutaway', robot: 'vigibot://sim · 4 zones', fpga: 'arty-a7 · reflex_top.vhd', automata: 'automata · recognise(word)', nn: 'leaf_cnn.keras · /predict', audio: 'esp32-fx · a2dp → i2s' };
+const VIZ_TITLE = { video: 'rviz2 · octomap · cutaway', robot: 'vigibot://sim · 4 zones', fpga: 'arty-a7 · reflex_top.vhd', automata: 'automata · recognise(word)', nn: 'leaf_cnn.keras · /predict', audio: 'esp32-fx · a2dp → i2s', comms: 'modulationlab · 4-psk · awgn' };
 $('#featured').innerHTML = featured.map((p) => `
   <article class="feat ${featured.indexOf(p) % 2 ? 'reverse' : ''}" id="p-${p.id}">
     <div class="feat-visual reveal" data-visual="${p.visual}">
