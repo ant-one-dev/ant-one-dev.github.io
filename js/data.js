@@ -403,10 +403,14 @@ export const logoStrip = ['efrei', 'ice', 'concordia', 'sfe', 'darty', 'carrefou
 // type: 'edu' | 'work' | 'asso' | 'award' | 'next'
 // logo: key of `logos`, or icon: 'next' | 'chip' | 'trophy' when there is no official logo
 export const timeline = [
-  { date: L('nov. 2026 → avr. 2027', 'Nov 2026 → Apr 2027'), type: 'next', icon: 'next',
+  { date: L('août → oct. 2027', 'Aug → Oct 2027'), type: 'next', icon: 'next',
     title: L('Stage ingénieur embarqué', 'Embedded engineering internship'), org: L('Votre entreprise ?', 'Your company?'),
-    desc: L('Stage de M1 de 5 mois, du 2 novembre 2026 au 2 avril 2027. Logiciel embarqué, FPGA, robotique ou drones.',
-      '5-month M1 internship from 2 November 2026 to 2 April 2027. Embedded software, FPGA, robotics or drones.') },
+    desc: L('Stage de 3 mois, d’août à octobre 2027. Logiciel embarqué, FPGA, robotique ou drones.',
+      '3-month internship from August to October 2027. Embedded software, FPGA, robotics or drones.') },
+  { date: L('nov. 2026 → avr. 2027', 'Nov 2026 → Apr 2027'), type: 'work', logo: 'efrei',
+    title: L('Stage de recherche (M1)', 'Research internship (M1)'), org: 'EFREI Research Lab · Paris',
+    desc: L('Stage de M1 de 5 mois au laboratoire de recherche de l’EFREI, du 2 novembre 2026 au 2 avril 2027.',
+      '5-month M1 internship at EFREI’s research lab, from 2 November 2026 to 2 April 2027.') },
   { date: '2026 – 2027', type: 'asso', logo: 'ice',
     title: L('Vice-président', 'Vice-President'), org: L('ICE EFREI (association technologique) · Paris', 'ICE EFREI (tech association) · Paris'),
     desc: L('Animation d’ateliers techniques (impression 3D, Arduino, Raspberry Pi) et accompagnement des étudiants dans leurs projets électroniques.',
