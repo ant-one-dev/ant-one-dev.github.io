@@ -399,7 +399,7 @@ export const logos = {
   sfe: { src: 'assets/logos/sfe.jpg', name: 'Solidarity For Earth (SFE)' },
   ice: { src: 'assets/logos/ice-efrei.png', name: 'ICE EFREI' },
 };
-export const logoStrip = ['efrei', 'ice', 'concordia', 'sfe', 'darty', 'carrefour', 'saintdo', 'academica', 'ambassadair'];
+export const logoStrip = ['efrei', 'efreilab', 'ice', 'concordia', 'sfe', 'darty', 'carrefour', 'saintdo', 'academica', 'ambassadair'];
 
 // type: 'edu' | 'work' | 'asso' | 'award' | 'next'
 // logo: key of `logos`, or icon: 'next' | 'chip' | 'trophy' when there is no official logo
