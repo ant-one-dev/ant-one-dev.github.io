@@ -392,14 +392,13 @@ export const logos = {
   efreilab: { src: 'assets/logos/efrei-research-lab.svg', name: 'Efrei Research Lab' },
   concordia: { src: 'assets/logos/concordia.svg', name: 'Concordia University' },
   darty: { src: 'assets/logos/darty.svg', name: 'Darty' },
-  carrefour: { src: 'assets/logos/carrefour-city.svg', name: 'Carrefour City', light: true }, // pale logo: darker in grayscale
   saintdo: { src: 'assets/logos/saint-dominique.png', name: 'Institution Saint-Dominique' },
   academica: { src: 'assets/logos/academica.png', name: 'Academica Dual Diploma' },
   ambassadair: { src: 'assets/logos/ambassadair.png', name: 'Ambassadair Academy' },
   sfe: { src: 'assets/logos/sfe.jpg', name: 'Solidarity For Earth (SFE)' },
   ice: { src: 'assets/logos/ice-efrei.png', name: 'ICE EFREI' },
 };
-export const logoStrip = ['efrei', 'efreilab', 'ice', 'concordia', 'sfe', 'darty', 'carrefour', 'saintdo', 'academica', 'ambassadair'];
+export const logoStrip = ['efrei', 'efreilab', 'ice', 'concordia', 'sfe', 'darty', 'saintdo', 'academica', 'ambassadair'];
 
 // type: 'edu' | 'work' | 'asso' | 'award' | 'next'
 // logo: key of `logos`, or icon: 'next' | 'chip' | 'trophy' when there is no official logo
@@ -436,9 +435,6 @@ export const timeline = [
     title: L('Vendeur conseil en produits techniques', 'Technical sales advisor'), org: 'Darty des Ternes · Paris',
     desc: L('Vente et explication technique d’équipements électroniques grand public, réapprovisionnement du rayon et mise à jour des prix.',
       'Advised customers on consumer electronics and explained them technically; restocked the department and updated prices.') },
-  { date: L('juin 2024', 'Jun 2024'), type: 'work', logo: 'carrefour',
-    title: L('Stage de manutention & logistique', 'Logistics internship'), org: 'Carrefour City · Neuilly-sur-Seine',
-    desc: L('Réception des livraisons, mise en rayon et gestion des stocks en réserve.', 'Received deliveries, stocked shelves and managed back-room inventory.') },
   { date: '2023 – 2024', type: 'award', logo: 'efrei',
     title: L('Major de promotion', 'Top of class'), org: 'EFREI Paris',
     desc: L('Classé premier de ma promotion dès ma première année, en 2023–2024.', 'Ranked first in my class in my first year, 2023–2024.') },

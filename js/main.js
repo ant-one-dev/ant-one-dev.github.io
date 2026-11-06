@@ -1,4 +1,4 @@
-import { profile, featured, projects, stack, timeline, logos, logoStrip } from './data.js?v=20261106d';
+import { profile, featured, projects, stack, timeline, logos, logoStrip } from './data.js?v=20261106e';
 import { UI } from './i18n.js?v=20261106c';
 import { initAutomata, initNN, initMarauder } from './visuals2d.js?v=20261024';
 
