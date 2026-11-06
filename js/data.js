@@ -10,7 +10,7 @@ export const profile = {
   email: 'antoinemroczko@gmail.com',
   github: 'https://github.com/ant-one-dev',
   linkedin: 'https://www.linkedin.com/in/antoine-mroczko/',
-  cv: 'assets/CV_Antoine_Mroczko.pdf',
+  cv: 'assets/CV_Antoine_Mroczko.pdf?v=20261106',
   roles: L(
     ['la conception FPGA & VHDL', 'le firmware en C/C++', 'la robotique & les drones', 'la vision embarquée', 'les systèmes temps réel'],
     ['FPGA & VHDL design', 'firmware in C/C++', 'robotics & drones', 'computer vision on the edge', 'real-time embedded systems'],

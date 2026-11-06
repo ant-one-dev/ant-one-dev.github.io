@@ -1,4 +1,4 @@
-import { profile, featured, projects, stack, timeline, logos, logoStrip } from './data.js?v=20261106e';
+import { profile, featured, projects, stack, timeline, logos, logoStrip } from './data.js?v=20261106f';
 import { UI } from './i18n.js?v=20261106c';
 import { initAutomata, initNN, initMarauder } from './visuals2d.js?v=20261024';
 
@@ -31,7 +31,7 @@ function applyStatic() {
   $$('[data-i18n-aria]').forEach((el) => { el.setAttribute('aria-label', tr(el.dataset.i18nAria)); });
   $$('#lang-toggle [data-l]').forEach((s) => s.classList.toggle('on', s.dataset.l === lang));
   // the CV exists in French and in English
-  $$('a[href*="CV_Antoine_Mroczko"]').forEach((a) => { a.href = `assets/CV_Antoine_Mroczko${lang === 'en' ? '_EN' : ''}.pdf`; });
+  $$('a[href*="CV_Antoine_Mroczko"]').forEach((a) => { a.href = `assets/CV_Antoine_Mroczko${lang === 'en' ? '_EN' : ''}.pdf?v=20261106`; });
 }
 function setLang(next) {
   lang = next;
