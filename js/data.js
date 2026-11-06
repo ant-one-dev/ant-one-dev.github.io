@@ -405,8 +405,8 @@ export const logoStrip = ['efrei', 'ice', 'concordia', 'sfe', 'darty', 'carrefou
 export const timeline = [
   { date: L('août → oct. 2027', 'Aug → Oct 2027'), type: 'next', icon: 'next',
     title: L('Stage ingénieur embarqué', 'Embedded engineering internship'), org: L('Votre entreprise ?', 'Your company?'),
-    desc: L('Stage de 3 mois, d’août à octobre 2027. Logiciel embarqué, FPGA, robotique ou drones.',
-      '3-month internship from August to October 2027. Embedded software, FPGA, robotics or drones.') },
+    desc: L('Stage de 3 mois, d’août à octobre 2027. Logiciel embarqué, FPGA, robotique ou drones. Ouvert ensuite à une alternance en 2027–2028.',
+      '3-month internship from August to October 2027. Embedded software, FPGA, robotics or drones. Then open to a work-study position in 2027–2028.') },
   { date: L('nov. 2026 → avr. 2027', 'Nov 2026 → Apr 2027'), type: 'work', logo: 'efrei',
     title: L('Stage de recherche (M1)', 'Research internship (M1)'), org: 'EFREI Research Lab · Paris',
     desc: L('Stage de M1 de 5 mois au laboratoire de recherche de l’EFREI, du 2 novembre 2026 au 2 avril 2027.',
