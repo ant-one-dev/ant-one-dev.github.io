@@ -389,6 +389,7 @@ export const stack = [
 // logoStrip: order of the scrolling band in the Journey section.
 export const logos = {
   efrei: { src: 'assets/logos/efrei.svg', name: 'EFREI Paris' },
+  efreilab: { src: 'assets/logos/efrei-research-lab.svg', name: 'Efrei Research Lab' },
   concordia: { src: 'assets/logos/concordia.svg', name: 'Concordia University' },
   darty: { src: 'assets/logos/darty.svg', name: 'Darty' },
   carrefour: { src: 'assets/logos/carrefour-city.svg', name: 'Carrefour City', light: true }, // pale logo: darker in grayscale
@@ -407,10 +408,10 @@ export const timeline = [
     title: L('Stage ingénieur embarqué', 'Embedded engineering internship'), org: L('Votre entreprise ?', 'Your company?'),
     desc: L('Stage de 3 mois, d’août à octobre 2027. Logiciel embarqué, FPGA, robotique ou drones. Ouvert ensuite à une alternance en 2027–2028.',
       '3-month internship from August to October 2027. Embedded software, FPGA, robotics or drones. Then open to a work-study position in 2027–2028.') },
-  { date: L('nov. 2026 → avr. 2027', 'Nov 2026 → Apr 2027'), type: 'work', logo: 'efrei',
+  { date: L('nov. 2026 → avr. 2027', 'Nov 2026 → Apr 2027'), type: 'work', logo: 'efreilab',
     title: L('Stage de recherche (M1)', 'Research internship (M1)'), org: 'EFREI Research Lab · Paris',
-    desc: L('Stage de M1 de 5 mois au laboratoire de recherche de l’EFREI, du 2 novembre 2026 au 2 avril 2027.',
-      '5-month M1 internship at EFREI’s research lab, from 2 November 2026 to 2 April 2027.') },
+    desc: L('Modélisation et analyse par IA de la stratégie de jeu au water-polo. Stage de M1 de 5 mois, du 2 novembre 2026 au 2 avril 2027.',
+      'AI-based modelling and analysis of water polo game strategy. 5-month M1 internship, from 2 November 2026 to 2 April 2027.') },
   { date: '2026 – 2027', type: 'asso', logo: 'ice',
     title: L('Vice-président', 'Vice-President'), org: L('ICE EFREI (association technologique) · Paris', 'ICE EFREI (tech association) · Paris'),
     desc: L('Animation d’ateliers techniques (impression 3D, Arduino, Raspberry Pi) et accompagnement des étudiants dans leurs projets électroniques.',
